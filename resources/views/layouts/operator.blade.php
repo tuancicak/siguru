@@ -9,57 +9,29 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    @include('components.navbar')
+
     <div class="container-fluid">
 
-        <a class="navbar-brand fw-bold" href="#">
-            SIGURU
-        </a>
+        <div class="row">
 
-        <div class="ms-auto text-white">
-            {{ Auth::user()->name }}
-        </div>
+            <div class="col-md-2 p-0">
 
-    </div>
-</nav>
+                @include('components.sidebar')
 
-<div class="container-fluid">
+            </div>
 
-    <div class="row">
+            <div class="col-md-10 p-4">
 
-        <div class="col-md-2 bg-light border-end min-vh-100 p-3">
+                @yield('content')
 
-            <h5>Menu</h5>
+                @include('components.footer')
 
-            <hr>
-
-            <a href="{{ route('dashboard') }}" class="d-block mb-2">
-                Dashboard
-            </a>
-
-            <a href="#" class="d-block mb-2">
-                Data Guru
-            </a>
-
-            <a href="#" class="d-block mb-2">
-                Absensi
-            </a>
-
-            <a href="#" class="d-block mb-2">
-                Laporan
-            </a>
-
-        </div>
-
-        <div class="col-md-10 p-4">
-
-            @yield('content')
+            </div>
 
         </div>
 
     </div>
-
-</div>
 
 </body>
 </html>
