@@ -59,17 +59,11 @@
 
                     <td>{{ $guru->no_hp }}</td>
 
-                    <td>
+                        <td>
+                            <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
-                        <a href="#" class="btn btn-warning btn-sm">
-                            Edit
-                        </a>
-
-                        <button class="btn btn-danger btn-sm">
-                            Hapus
-                        </button>
-
-                    </td>
+                            <button class="btn btn-danger btn-sm">Hapus</button>
+                        </td>
 
                 </tr>
 

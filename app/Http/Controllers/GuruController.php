@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreGuruRequest;
+use App\Http\Requests\UpdateGuruRequest;
 use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -68,17 +69,43 @@ class GuruController extends Controller
      */
     public function edit(string $id)
     {
-        //
+    $guru = Guru::with('user')->findOrFail($id);
+
+    return view('guru.edit', compact('guru'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+public function update(UpdateGuruRequest $request, string $id)
+{
+    $guru = Guru::with('user')->findOrFail($id);
+
+    // Update user
+    $guru->user->update([
+        'name' => $request->nama,
+        'email' => $request->email,
+    ]);
+
+    // Update password jika diisi
+    if ($request->filled('password')) {
+        $guru->user->password = Hash::make($request->password);
+        $guru->user->save();
     }
 
+    // Update data guru
+    $guru->update([
+        'nip' => $request->nip,
+        'nama' => $request->nama,
+        'jabatan' => $request->jabatan,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'no_hp' => $request->no_hp,
+    ]);
+
+    return redirect()
+        ->route('guru.index')
+        ->with('success', 'Data guru berhasil diperbarui.');
+}
     /**
      * Remove the specified resource from storage.
      */
