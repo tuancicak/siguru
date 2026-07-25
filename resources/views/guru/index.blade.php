@@ -59,10 +59,24 @@
 
                     <td>{{ $guru->no_hp }}</td>
 
-                        <td>
-                            <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                       <td>
+                            <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
 
-                            <button class="btn btn-danger btn-sm">Hapus</button>
+                            <form action="{{ route('guru.destroy', $guru->id) }}"
+                                method="POST"
+                                class="d-inline"
+                                onsubmit="return confirm('Yakin ingin menghapus guru ini?')">
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Hapus
+                                </button>
+
+                            </form>
                         </td>
 
                 </tr>

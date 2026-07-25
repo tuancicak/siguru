@@ -110,7 +110,14 @@ public function update(UpdateGuruRequest $request, string $id)
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-        //
-    }
+{
+    $guru = Guru::with('user')->findOrFail($id);
+
+    // Hapus akun user (data guru ikut terhapus karena cascadeOnDelete)
+    $guru->user->delete();
+
+    return redirect()
+        ->route('guru.index')
+        ->with('success', 'Data guru berhasil dihapus.');
+}
 }
