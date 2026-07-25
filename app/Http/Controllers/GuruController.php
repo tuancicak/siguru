@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGuruRequest;
+use App\Models\Guru;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
 {
@@ -11,7 +15,9 @@ class GuruController extends Controller
      */
     public function index()
     {
-        return vie('guru.index');
+    $gurus = Guru::all();
+
+    return view('guru.index', compact('gurus'));
     }
 
     /**
@@ -19,17 +25,36 @@ class GuruController extends Controller
      */
     public function create()
     {
-        //
+        return view('guru.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreGuruRequest $request)
     {
-        //
-    }
+        // Simpan akun user
+        $user = User::create([
+            'name' => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'guru',
+        ]);
 
+        // Simpan data guru
+        Guru::create([
+            'user_id' => $user->id,
+            'nip' => $request->nip,
+            'nama' => $request->nama,
+            'jabatan' => $request->jabatan,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'no_hp' => $request->no_hp,
+        ]);
+
+        return redirect()
+            ->route('guru.index')
+            ->with('success', 'Data guru berhasil ditambahkan.');
+    }
     /**
      * Display the specified resource.
      */

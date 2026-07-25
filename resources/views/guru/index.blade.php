@@ -10,6 +10,18 @@
     </a>
 </div>
 
+@if(session('success'))
+
+    <div class="alert alert-success alert-dismissible fade show">
+
+        {{ session('success') }}
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+    </div>
+
+@endif
+
 <div class="card">
 
     <div class="card-body">
@@ -31,6 +43,40 @@
 
             <tbody>
 
+            @if($gurus->count() > 0)
+
+                @foreach($gurus as $guru)
+
+                <tr>
+
+                    <td>{{ $loop->iteration }}</td>
+
+                    <td>{{ $guru->nip }}</td>
+
+                    <td>{{ $guru->nama }}</td>
+
+                    <td>{{ $guru->jabatan }}</td>
+
+                    <td>{{ $guru->no_hp }}</td>
+
+                    <td>
+
+                        <a href="#" class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <button class="btn btn-danger btn-sm">
+                            Hapus
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                @endforeach
+
+            @else
+
                 <tr>
 
                     <td colspan="6" class="text-center">
@@ -40,6 +86,8 @@
                     </td>
 
                 </tr>
+
+            @endif
 
             </tbody>
 
