@@ -6,6 +6,7 @@ use App\Http\Controllers\GuruDashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\PengaturanController;
 
 // Halaman utama
 Route::redirect('/', '/login');
@@ -17,6 +18,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/guru/dashboard', [GuruDashboardController::class, 'index'])
         ->name('guru.dashboard');
 
+    Route::post('/guru/absen-masuk', [GuruDashboardController::class, 'absenMasuk'])
+        ->name('guru.absen-masuk');
+
 });
 
 Route::middleware(['auth', 'role:operator'])->group(function () {
@@ -27,6 +31,8 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
     Route::resource('guru', GuruController::class);
 
     Route::resource('absensi', AbsensiController::class);
+
+    Route::resource('pengaturan', PengaturanController::class);
 
 });
 

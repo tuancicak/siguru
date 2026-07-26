@@ -13,17 +13,27 @@
 
 </div>
 
+@if($pengaturan)
+
+<div class="alert alert-primary">
+
+    🏫 <strong>{{ $pengaturan->nama_sekolah }}</strong>
+
+</div>
+
+@endif
+
 <div class="row">
 
     <div class="col-md-4 mb-3">
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm border-start border-primary border-4">
 
             <div class="card-body">
 
-                <h5>Total Guru</h5>
+                <h6 class="text-muted">👨‍🏫 Total Guru</h6>
 
-                <h1>0</h1>
+                <h2>{{ $totalGuru }}</h2>
 
             </div>
 
@@ -33,13 +43,13 @@
 
     <div class="col-md-4 mb-3">
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm border-start border-success border-4">
 
             <div class="card-body">
 
-                <h5>Hadir Hari Ini</h5>
+                <h6 class="text-muted">📝 Absensi Hari Ini</h6>
 
-                <h1>0</h1>
+                <h2>{{ $totalAbsensi }}</h2>
 
             </div>
 
@@ -49,13 +59,13 @@
 
     <div class="col-md-4 mb-3">
 
-        <div class="card shadow-sm">
+        <div class="card shadow-sm border-start border-danger border-4">
 
             <div class="card-body">
 
-                <h5>Belum Hadir</h5>
+                <h6 class="text-muted">⏰ Terlambat</h6>
 
-                <h1>0</h1>
+                <h2>{{ $totalTerlambat }}</h2>
 
             </div>
 

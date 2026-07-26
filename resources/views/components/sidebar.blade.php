@@ -14,16 +14,16 @@
         </a>
 
         <a href="{{ route('guru.index') }}"
-            class="list-group-item list-group-item-action {{ request()->routeIs('guru.*') ? 'active' : '' }}">
+           class="list-group-item list-group-item-action {{ request()->routeIs('guru.*') ? 'active' : '' }}">
 
             👨‍🏫 Data Guru
 
         </a>
 
         <a href="{{ route('absensi.index') }}"
-            class="list-group-item list-group-item-action {{ request()->routeIs('absensi.*') ? 'active' : '' }}">
+           class="list-group-item list-group-item-action {{ request()->routeIs('absensi.*') ? 'active' : '' }}">
 
-             📝 Absensi
+            📝 Absensi
 
         </a>
 
@@ -31,6 +31,13 @@
            class="list-group-item list-group-item-action">
 
             📊 Laporan
+
+        </a>
+
+        <a href="{{ route('pengaturan.index') }}"
+           class="list-group-item list-group-item-action {{ request()->routeIs('pengaturan.*') ? 'active' : '' }}">
+
+            ⚙️ Pengaturan
 
         </a>
 
