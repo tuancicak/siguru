@@ -14,16 +14,16 @@
         </a>
 
         <a href="{{ route('guru.index') }}"
-        class="list-group-item list-group-item-action {{ request()->routeIs('guru.*') ? 'active' : '' }}">
+            class="list-group-item list-group-item-action {{ request()->routeIs('guru.*') ? 'active' : '' }}">
 
             👨‍🏫 Data Guru
 
         </a>
 
-        <a href="#"
-           class="list-group-item list-group-item-action">
+        <a href="{{ route('absensi.index') }}"
+            class="list-group-item list-group-item-action {{ request()->routeIs('absensi.*') ? 'active' : '' }}">
 
-            📝 Absensi
+             📝 Absensi
 
         </a>
 
