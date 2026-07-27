@@ -25,6 +25,7 @@ class Guru extends Model
 
     public function absensis(): HasMany
     {
-    return $this->hasMany(Absensi::class);
+         return $this->hasMany(Absensi::class);
     }
+
 }

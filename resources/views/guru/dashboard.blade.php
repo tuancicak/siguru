@@ -101,6 +101,32 @@
 
                     @endif
 
+                    @if($absensiHariIni)
+
+                        <hr>
+
+                        <p class="mb-1">
+
+                            <strong>🕒 Jam Masuk :</strong><br>
+
+                            {{ $absensiHariIni->jam_masuk }}
+
+                        </p>
+
+                        @if($absensiHariIni->jam_pulang)
+
+                            <p class="mb-0">
+
+                                <strong>🏁 Jam Pulang :</strong><br>
+
+                                {{ $absensiHariIni->jam_pulang }}
+
+                            </p>
+
+                        @endif
+
+                    @endif
+
                 </div>
 
             </div>
@@ -133,25 +159,39 @@
 
         @if(!$absensiHariIni)
 
-            <form action="{{ route('guru.absen-masuk') }}" method="POST">
+        <form action="{{ route('guru.absen-masuk') }}" method="POST">
 
-                @csrf
+            @csrf
 
-                <button class="btn btn-success btn-lg">
+            <button class="btn btn-success btn-lg">
 
-                    🟢 Absen Masuk
+                🟢 Absen Masuk
 
-                </button>
+            </button>
 
-            </form>
+        </form>
+
+        @elseif(!$absensiHariIni->jam_pulang)
+
+        <form action="{{ route('guru.absen-pulang') }}" method="POST">
+
+            @csrf
+
+            <button class="btn btn-danger btn-lg">
+
+                🔴 Absen Pulang
+
+            </button>
+
+        </form>
 
         @else
 
-            <button class="btn btn-secondary btn-lg" disabled>
+        <button class="btn btn-secondary btn-lg" disabled>
 
-                ✔ Sudah Absen Hari Ini
+            ✔ Absensi Hari Ini Selesai
 
-            </button>
+        </button>
 
         @endif
 

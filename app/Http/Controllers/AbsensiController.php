@@ -12,7 +12,9 @@ class AbsensiController extends Controller
      */
     public function index()
     {
-    $absensis = Absensi::with('guru')->latest()->get();
+    $absensis = Absensi::with('guru')
+        ->latest('tanggal')
+        ->get();
 
     return view('absensi.index', compact('absensis'));
     }
@@ -44,19 +46,32 @@ class AbsensiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Absensi $absensi)
     {
-        //
+        return view('absensi.edit', compact('absensi'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+   public function update(Request $request, Absensi $absensi)
     {
-        //
-    }
+    $request->validate([
+        'jam_masuk'  => 'nullable',
+        'jam_pulang' => 'nullable',
+        'status' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alfa',
+    ]);
 
+    $absensi->update([
+        'jam_masuk'  => $request->jam_masuk,
+        'jam_pulang' => $request->jam_pulang,
+        'status'     => $request->status,
+    ]);
+
+    return redirect()
+        ->route('absensi.index')
+        ->with('success', 'Data absensi berhasil diperbarui.');
+    }
     /**
      * Remove the specified resource from storage.
      */

@@ -13,10 +13,18 @@ class DashboardController extends Controller
     {
     $totalGuru = Guru::count();
 
-    $totalAbsensi = Absensi::whereDate('created_at', today())->count();
+    $totalAbsensi = Absensi::whereDate('tanggal', today())->count();
 
-    $totalTerlambat = Absensi::whereDate('created_at', today())
-        ->where('status', 'terlambat')
+    $totalTerlambat = Absensi::whereDate('tanggal', today())
+        ->where('status', 'Terlambat')
+        ->count();
+
+    $totalPulang = Absensi::whereDate('tanggal', today())
+        ->whereNotNull('jam_pulang')
+        ->count();
+
+    $masihDiSekolah = Absensi::whereDate('tanggal', today())
+        ->whereNull('jam_pulang')
         ->count();
 
     $pengaturan = Pengaturan::first();
@@ -25,6 +33,8 @@ class DashboardController extends Controller
         'totalGuru',
         'totalAbsensi',
         'totalTerlambat',
+        'totalPulang',
+        'masihDiSekolah',
         'pengaturan'
     ));
     }

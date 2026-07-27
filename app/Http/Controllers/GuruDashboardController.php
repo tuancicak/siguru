@@ -66,4 +66,34 @@ class GuruDashboardController extends Controller
             "Absen masuk berhasil. Status Anda: {$status}"
         );
     }
+
+        public function absenPulang()
+    {
+        $guru = Guru::where('user_id', Auth::id())->first();
+
+        if (!$guru) {
+            return back()->with('error', 'Data guru tidak ditemukan.');
+        }
+
+        $absensi = Absensi::where('guru_id', $guru->id)
+            ->whereDate('tanggal', today())
+            ->first();
+
+        if (!$absensi) {
+            return back()->with('error', 'Silakan absen masuk terlebih dahulu.');
+        }
+
+        if ($absensi->jam_pulang) {
+            return back()->with('error', 'Anda sudah melakukan absen pulang.');
+        }
+
+        $absensi->update([
+            'jam_pulang' => Carbon::now()->format('H:i:s')
+        ]);
+
+        return back()->with(
+            'success',
+            'Absen pulang berhasil.'
+        );
+    }
 }

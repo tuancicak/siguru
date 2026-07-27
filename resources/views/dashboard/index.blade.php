@@ -73,6 +73,38 @@
 
     </div>
 
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm border-start border-info border-4">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">🏁 Sudah Pulang</h6>
+
+                <h2>{{ $totalPulang }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <div class="card shadow-sm border-start border-warning border-4">
+
+            <div class="card-body">
+
+                <h6 class="text-muted">🏫 Masih di Sekolah</h6>
+
+                <h2>{{ $masihDiSekolah }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 @endsection

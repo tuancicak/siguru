@@ -21,6 +21,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/guru/absen-masuk', [GuruDashboardController::class, 'absenMasuk'])
         ->name('guru.absen-masuk');
 
+    Route::post('/guru/absen-pulang', [GuruDashboardController::class, 'absenPulang'])
+    ->name('guru.absen-pulang');
+
 });
 
 Route::middleware(['auth', 'role:operator'])->group(function () {

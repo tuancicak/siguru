@@ -17,6 +17,7 @@
                     <th>Jam Masuk</th>
                     <th>Jam Pulang</th>
                     <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
 
@@ -27,16 +28,64 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $absensi->guru->nama }}</td>
-                        <td>{{ $absensi->tanggal }}</td>
+                        <td>
+                            {{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('d F Y') }}
+                        </td>
                         <td>{{ $absensi->jam_masuk }}</td>
-                        <td>{{ $absensi->jam_pulang }}</td>
-                        <td>{{ $absensi->status }}</td>
+                        <td>
+                            {{ $absensi->jam_pulang ?? '-' }}
+                        </td>
+                        <td>
+                            @if($absensi->status == 'Hadir')
+
+                                <span class="badge bg-success">
+                                    Hadir
+                                </span>
+
+                            @elseif($absensi->status == 'Terlambat')
+
+                                <span class="badge bg-warning text-dark">
+                                    Terlambat
+                                </span>
+
+                            @elseif($absensi->status == 'Izin')
+
+                                <span class="badge bg-info">
+                                    Izin
+                                </span>
+
+                            @elseif($absensi->status == 'Sakit')
+
+                                <span class="badge bg-primary">
+                                    Sakit
+                                </span>
+
+                            @else
+
+                                <span class="badge bg-danger">
+                                    Alfa
+                                </span>
+
+                            @endif
+
+                        </td>
+
+                        <td>
+
+                            <a href="{{ route('absensi.edit', $absensi) }}"
+                            class="btn btn-primary btn-sm">
+
+                                ✏ Edit
+
+                            </a>
+
+                        </td>
                     </tr>
 
                 @empty
 
                     <tr>
-                        <td colspan="6" class="text-center">
+                        <td colspan="7" class="text-center">
                             Belum ada data absensi.
                         </td>
                     </tr>
