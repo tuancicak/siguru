@@ -10,9 +10,28 @@ class AbsensiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-    $absensis = Absensi::with('guru')
+    $query = Absensi::with('guru');
+
+    if ($request->filled('tanggal')) {
+
+        $query->whereDate('tanggal', $request->tanggal);
+
+    }
+
+    if ($request->filled('nama')) {
+
+        $query->whereHas('guru', function ($q) use ($request) {
+
+            $q->where('nama', 'like', '%' . $request->nama . '%');
+
+        });
+
+    }
+
+
+    $absensis = $query
         ->latest('tanggal')
         ->get();
 

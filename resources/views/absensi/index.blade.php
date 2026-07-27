@@ -4,6 +4,54 @@
 
 <h2 class="mb-4">Data Absensi Guru</h2>
 
+<form method="GET"
+      action="{{ route('absensi.index') }}"
+      class="row g-3 mb-4">
+
+    <div class="col-md-3">
+
+        <input
+            type="date"
+            name="tanggal"
+            class="form-control"
+            value="{{ request('tanggal') }}">
+
+    </div>
+
+    <div class="col-md-4">
+
+        <input
+            type="text"
+            name="nama"
+            class="form-control"
+            placeholder="Cari nama guru..."
+            value="{{ request('nama') }}">
+
+    </div>
+
+    <div class="col-md-2">
+
+        <button class="btn btn-primary w-100">
+
+            🔍 Filter
+
+        </button>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <a href="{{ route('absensi.index') }}"
+           class="btn btn-secondary w-100">
+
+            Reset
+
+        </a>
+
+    </div>
+
+</form>
+
 <div class="card">
     <div class="card-body">
 
