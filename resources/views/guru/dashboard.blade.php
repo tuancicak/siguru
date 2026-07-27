@@ -63,11 +63,43 @@
 
                     <h5>📋 Status Absensi</h5>
 
-                    <h4 class="text-danger">
+                    @if($absensiHariIni)
 
-                        Belum Absen
+                        @if($absensiHariIni->status == 'Hadir')
 
-                    </h4>
+                            <h4 class="text-success">
+
+                                ✅ Hadir
+
+                            </h4>
+
+                        @elseif($absensiHariIni->status == 'Terlambat')
+
+                            <h4 class="text-warning">
+
+                                ⏰ Terlambat
+
+                            </h4>
+
+                        @else
+
+                            <h4>
+
+                                {{ $absensiHariIni->status }}
+
+                            </h4>
+
+                        @endif
+
+                    @else
+
+                        <h4 class="text-danger">
+
+                            Belum Absen
+
+                        </h4>
+
+                    @endif
 
                 </div>
 
@@ -99,17 +131,29 @@
 
         @endif
 
-        <form action="{{ route('guru.absen-masuk') }}" method="POST">
+        @if(!$absensiHariIni)
 
-            @csrf
+            <form action="{{ route('guru.absen-masuk') }}" method="POST">
 
-            <button class="btn btn-success btn-lg">
+                @csrf
 
-                🟢 Absen Masuk
+                <button class="btn btn-success btn-lg">
+
+                    🟢 Absen Masuk
+
+                </button>
+
+            </form>
+
+        @else
+
+            <button class="btn btn-secondary btn-lg" disabled>
+
+                ✔ Sudah Absen Hari Ini
 
             </button>
 
-        </form>
+        @endif
 
     </div>
 

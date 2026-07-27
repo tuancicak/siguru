@@ -12,7 +12,19 @@ class GuruDashboardController extends Controller
 {
     public function index()
     {
-        return view('guru.dashboard');
+    $guru = Guru::where('user_id', Auth::id())->first();
+
+    $absensiHariIni = null;
+
+    if ($guru) {
+        $absensiHariIni = Absensi::where('guru_id', $guru->id)
+            ->whereDate('tanggal', today())
+            ->first();
+    }
+
+    return view('guru.dashboard', compact(
+        'absensiHariIni'
+    ));
     }
 
     public function absenMasuk()
