@@ -29,26 +29,49 @@ class PengaturanController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_sekolah'     => 'required',
-            'jam_masuk'        => 'required',
-            'jam_pulang'       => 'required',
-            'batas_terlambat'  => 'required',
-        ]);
+    $request->validate([
+        'nama_sekolah'    => 'required',
+        'alamat'          => 'nullable',
+        'telepon'         => 'nullable',
+        'email'           => 'nullable|email',
+        'website'         => 'nullable',
+        'logo'            => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+        'jam_masuk'       => 'required',
+        'jam_pulang'      => 'nullable',
+        'batas_terlambat' => 'required',
+    ]);
 
-        Pengaturan::updateOrCreate(
-            ['id' => 1],
-            [
-                'nama_sekolah'    => $request->nama_sekolah,
-                'jam_masuk'       => $request->jam_masuk,
-                'jam_pulang'      => $request->jam_pulang,
-                'batas_terlambat' => $request->batas_terlambat,
-            ]
-        );
+        $pengaturan = Pengaturan::first();
 
-        return redirect()
-            ->route('pengaturan.index')
-            ->with('success', 'Pengaturan berhasil disimpan.');
+        $logo = $pengaturan->logo ?? null;
+
+        if ($request->hasFile('logo')) {
+
+            $logo = $request->file('logo')->store(
+                'logo-sekolah',
+                'public'
+            );
+
+        }
+
+    Pengaturan::updateOrCreate(
+        ['id' => 1],
+        [
+            'nama_sekolah'    => $request->nama_sekolah,
+            'alamat'          => $request->alamat,
+            'telepon'         => $request->telepon,
+            'email'           => $request->email,
+            'website'         => $request->website,
+            'logo'            => $logo,
+            'jam_masuk'       => $request->jam_masuk,
+            'jam_pulang'      => $request->jam_pulang,
+            'batas_terlambat' => $request->batas_terlambat,
+        ]
+    );
+
+    return redirect()
+        ->route('pengaturan.index')
+        ->with('success', 'Pengaturan berhasil disimpan.');
     }
     /**
      * Display the specified resource.

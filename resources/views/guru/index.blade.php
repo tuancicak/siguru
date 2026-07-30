@@ -3,11 +3,34 @@
 @section('content')
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Data Guru</h2>
 
-    <a href="{{ route('guru.create') }}" class="btn btn-primary">
-        + Tambah Guru
+    <div>
+
+        <h2 class="fw-bold mb-1">
+
+            <i class="bi bi-people-fill text-primary"></i>
+
+            Data Guru
+
+        </h2>
+
+        <small class="text-muted">
+
+            Kelola seluruh data guru yang terdaftar.
+
+        </small>
+
+    </div>
+
+    <a href="{{ route('guru.create') }}"
+       class="btn btn-primary shadow-sm rounded-pill px-4">
+
+        <i class="bi bi-plus-circle me-2"></i>
+
+        Tambah Guru
+
     </a>
+
 </div>
 
 @if(session('success'))
@@ -26,7 +49,7 @@
 
     <div class="card-body">
 
-        <table class="table table-bordered table-hover">
+        <table class="table table-hover align-middle">
 
             <thead class="table-primary">
 
@@ -60,7 +83,7 @@
                     <td>{{ $guru->no_hp }}</td>
 
                        <td>
-                            <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-warning btn-sm">
+                            <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-outline-warning btn-sm rounded-pill">
                                 Edit
                             </a>
 
@@ -72,7 +95,7 @@
                                 @csrf
                                 @method('DELETE')
 
-                                <button type="submit" class="btn btn-danger btn-sm">
+                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill">
                                     Hapus
                                 </button>
 

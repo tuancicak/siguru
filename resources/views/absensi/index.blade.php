@@ -6,9 +6,15 @@
 
 <form method="GET"
       action="{{ route('absensi.index') }}"
-      class="row g-3 mb-4">
+      class="row g-3 align-items-end mb-4">
 
     <div class="col-md-3">
+
+        <label class="form-label">
+
+            📅 Tanggal
+
+        </label>
 
         <input
             type="date"
@@ -20,6 +26,12 @@
 
     <div class="col-md-4">
 
+        <label class="form-label">
+
+            👨‍🏫 Nama Guru
+
+        </label>
+
         <input
             type="text"
             name="nama"
@@ -29,9 +41,9 @@
 
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-2 d-grid">
 
-        <button class="btn btn-primary w-100">
+        <button class="btn btn-primary">
 
             🔍 Filter
 
@@ -39,12 +51,23 @@
 
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1 d-grid">
 
         <a href="{{ route('absensi.index') }}"
-           class="btn btn-secondary w-100">
+           class="btn btn-secondary">
 
-            Reset
+            ↺
+
+        </a>
+
+    </div>
+
+    <div class="col-md-2 d-grid">
+
+        <a href="{{ route('absensi.pdf', request()->query()) }}"
+        class="btn btn-danger">
+
+            📄 PDF
 
         </a>
 
@@ -55,95 +78,96 @@
 <div class="card">
     <div class="card-body">
 
-        <table class="table table-bordered">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
 
-            <thead class="table-primary">
-                <tr>
-                    <th>No</th>
-                    <th>Nama Guru</th>
-                    <th>Tanggal</th>
-                    <th>Jam Masuk</th>
-                    <th>Jam Pulang</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                @forelse($absensis as $absensi)
-
+                <thead class="table-primary">
                     <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>{{ $absensi->guru->nama }}</td>
-                        <td>
-                            {{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('d F Y') }}
-                        </td>
-                        <td>{{ $absensi->jam_masuk }}</td>
-                        <td>
-                            {{ $absensi->jam_pulang ?? '-' }}
-                        </td>
-                        <td>
-                            @if($absensi->status == 'Hadir')
-
-                                <span class="badge bg-success">
-                                    Hadir
-                                </span>
-
-                            @elseif($absensi->status == 'Terlambat')
-
-                                <span class="badge bg-warning text-dark">
-                                    Terlambat
-                                </span>
-
-                            @elseif($absensi->status == 'Izin')
-
-                                <span class="badge bg-info">
-                                    Izin
-                                </span>
-
-                            @elseif($absensi->status == 'Sakit')
-
-                                <span class="badge bg-primary">
-                                    Sakit
-                                </span>
-
-                            @else
-
-                                <span class="badge bg-danger">
-                                    Alfa
-                                </span>
-
-                            @endif
-
-                        </td>
-
-                        <td>
-
-                            <a href="{{ route('absensi.edit', $absensi) }}"
-                            class="btn btn-primary btn-sm">
-
-                                ✏ Edit
-
-                            </a>
-
-                        </td>
+                        <th>No</th>
+                        <th>Nama Guru</th>
+                        <th>Tanggal</th>
+                        <th>Jam Masuk</th>
+                        <th>Jam Pulang</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
+                </thead>
 
-                @empty
+                <tbody>
 
-                    <tr>
-                        <td colspan="7" class="text-center">
-                            Belum ada data absensi.
-                        </td>
-                    </tr>
+                    @forelse($absensis as $absensi)
 
-                @endforelse
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $absensi->guru->nama }}</td>
+                            <td>
+                                {{ \Carbon\Carbon::parse($absensi->tanggal)->translatedFormat('d F Y') }}
+                            </td>
+                            <td>{{ $absensi->jam_masuk }}</td>
+                            <td>
+                                {{ $absensi->jam_pulang ?? '-' }}
+                            </td>
+                            <td>
+                                @if($absensi->status == 'Hadir')
 
-            </tbody>
+                                    <span class="badge bg-success">
+                                        Hadir
+                                    </span>
 
-        </table>
+                                @elseif($absensi->status == 'Terlambat')
 
+                                    <span class="badge bg-warning text-dark">
+                                        Terlambat
+                                    </span>
+
+                                @elseif($absensi->status == 'Izin')
+
+                                    <span class="badge bg-info">
+                                        Izin
+                                    </span>
+
+                                @elseif($absensi->status == 'Sakit')
+
+                                    <span class="badge bg-primary">
+                                        Sakit
+                                    </span>
+
+                                @else
+
+                                    <span class="badge bg-danger">
+                                        Alfa
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            <td>
+
+                                <a href="{{ route('absensi.edit', $absensi) }}"
+                                class="btn btn-primary btn-sm">
+
+                                    ✏ Edit
+
+                                </a>
+
+                            </td>
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                Belum ada data absensi.
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+        </div>
     </div>
 </div>
 

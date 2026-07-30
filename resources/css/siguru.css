@@ -1,0 +1,71 @@
+/* ===========================
+   SIGURU DESIGN SYSTEM
+=========================== */
+
+body{
+    background:#f5f7fb;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* CARD */
+
+.card{
+    border:none;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+}
+
+/* BUTTON */
+
+.btn{
+    border-radius:10px;
+    transition:.25s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+/* TABLE */
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead th{
+
+    background:#2563eb;
+    color:white;
+    border:none;
+
+}
+
+.table tbody tr:hover{
+
+    background:#f8fbff;
+
+}
+
+/* PAGE TITLE */
+
+.page-title{
+
+    font-weight:700;
+
+    color:#1e293b;
+
+}
+
+/* SIDEBAR */
+
+.list-group-item{
+
+    transition:.2s;
+
+}
+
+.list-group-item:hover{
+
+    transform:translateX(5px);
+
+}

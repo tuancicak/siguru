@@ -33,6 +33,11 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
 
     Route::resource('guru', GuruController::class);
 
+    Route::get('/absensi/export/pdf', [
+    App\Http\Controllers\AbsensiController::class,
+    'exportPdf'
+    ])->name('absensi.pdf');
+
     Route::resource('absensi', AbsensiController::class);
 
     Route::resource('pengaturan', PengaturanController::class);

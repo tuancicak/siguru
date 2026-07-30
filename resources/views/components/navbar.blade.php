@@ -1,25 +1,38 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
 
     <div class="container-fluid">
 
-        <a class="navbar-brand fw-bold" href="{{ route('dashboard') }}">
-            SIGURU
-        </a>
+        <div>
 
-        <div class="ms-auto d-flex align-items-center">
+            <h4 class="mb-0 fw-bold text-primary">
 
-            <span class="text-white me-3">
-                Halo, {{ Auth::user()->name }}
-            </span>
+                SIGURU
 
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
+            </h4>
 
-                <button class="btn btn-light btn-sm">
-                    Logout
-                </button>
+            <small class="text-muted">
 
-            </form>
+                Sistem Informasi Guru
+
+            </small>
+
+        </div>
+
+        <div class="ms-auto text-end">
+
+            <div class="fw-semibold">
+
+                👋 Selamat datang,
+
+                {{ Auth::user()->name }}
+
+            </div>
+
+            <small class="text-muted">
+
+                {{ now()->translatedFormat('l, d F Y') }}
+
+            </small>
 
         </div>
 

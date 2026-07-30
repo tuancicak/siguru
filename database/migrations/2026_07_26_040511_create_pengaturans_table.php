@@ -13,13 +13,21 @@ return new class extends Migration
     {
         Schema::create('pengaturans', function (Blueprint $table) {
 
-            $table->id();
-
             $table->string('nama_sekolah');
+
+            $table->string('alamat')->nullable();
+
+            $table->string('telepon')->nullable();
+
+            $table->string('email')->nullable();
+
+            $table->string('website')->nullable();
+
+            $table->string('logo')->nullable();
 
             $table->time('jam_masuk');
 
-            $table->time('jam_pulang');
+            $table->time('jam_pulang')->nullable();
 
             $table->time('batas_terlambat');
 

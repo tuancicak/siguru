@@ -10,6 +10,16 @@ class Pengaturan extends Model
 
         'nama_sekolah',
 
+        'alamat',
+
+        'telepon',
+
+        'email',
+
+        'website',
+
+        'logo',
+
         'jam_masuk',
 
         'jam_pulang',

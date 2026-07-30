@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class AbsensiController extends Controller
@@ -90,6 +91,43 @@ class AbsensiController extends Controller
     return redirect()
         ->route('absensi.index')
         ->with('success', 'Data absensi berhasil diperbarui.');
+    }
+
+    public function exportPdf(Request $request)
+    {
+    $query = Absensi::with('guru');
+
+    if ($request->filled('tanggal')) {
+
+        $query->whereDate('tanggal', $request->tanggal);
+
+    }
+
+    if ($request->filled('nama')) {
+
+        $query->whereHas('guru', function ($q) use ($request) {
+
+            $q->where('nama', 'like', '%' . $request->nama . '%');
+
+        });
+
+    }
+
+    $absensis = $query
+        ->latest('tanggal')
+        ->get();
+
+    $pengaturan = \App\Models\Pengaturan::first();
+
+    $pdf = Pdf::loadView(
+        'absensi.pdf',
+        compact(
+            'absensis',
+            'pengaturan'
+        )
+    );
+
+    return $pdf->download('laporan_absensi.pdf');
     }
     /**
      * Remove the specified resource from storage.

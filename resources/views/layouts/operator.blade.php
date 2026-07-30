@@ -6,24 +6,31 @@
     <title>SIGURU</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 </head>
-<body>
+<body class="bg-light">
 
     @include('components.navbar')
 
     <div class="container-fluid">
 
-        <div class="row">
+        <div class="row g-0">
 
-            <div class="col-md-2 p-0">
+            <div class="col-lg-2">
 
                 @include('components.sidebar')
 
             </div>
 
-            <div class="col-md-10 p-4">
+            <div class="col-lg-10">
 
-                @yield('content')
+                <main class="p-4">
+
+                    @yield('content')
+
+                </main>
 
                 @include('components.footer')
 
