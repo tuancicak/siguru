@@ -6,7 +6,6 @@ use App\Models\Guru;
 use App\Models\Absensi;
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -30,39 +29,47 @@ class DashboardController extends Controller
             ->whereNull('jam_pulang')
             ->count();
 
-    $grafik = Absensi::select(
-        DB::raw('DATE(tanggal) as tanggal'),
-        DB::raw('COUNT(*) as total')
-    )
-    ->whereDate('tanggal', '>=', now()->subDays(6))
-    ->groupBy('tanggal')
-    ->orderBy('tanggal')
-    ->get();
+        $grafik = Absensi::select(
+            DB::raw('DATE(tanggal) as tanggal'),
+            DB::raw('COUNT(*) as total')
+        )
+        ->whereDate('tanggal', '>=', now()->subDays(6))
+        ->groupBy('tanggal')
+        ->orderBy('tanggal')
+        ->get();
 
-    $statusChart = Absensi::select(
-        'status',
-        DB::raw('COUNT(*) as total')
-    )
+        $statusChart = Absensi::select(
+            'status',
+            DB::raw('COUNT(*) as total')
+        )
+        ->whereDate('tanggal', today())
+        ->groupBy('status')
+        ->get();
 
-    ->whereDate('tanggal', today())
-    ->groupBy('status')
-    ->get();
+        $guruBelumAbsen = Guru::whereDoesntHave('absensis', function ($q) {
+            $q->whereDate('tanggal', today());
+        })->get();
 
-    $guruBelumAbsen = Guru::whereDoesntHave('absensis', function ($q) {
-    $q->whereDate('tanggal', today());
-    })->get();
+        $aktivitasHariIni = Absensi::with('guru')
+            ->whereDate('tanggal', today())
+            ->latest()
+            ->take(8)
+            ->get();
 
         $pengaturan = Pengaturan::first();
 
         return view('dashboard.index', compact(
             'totalGuru',
             'totalAbsensi',
-            'totalTerlambat',
             'belumAbsen',
-            'pengaturan',
+            'totalTerlambat',
+            'totalPulang',
+            'masihDiSekolah',
             'grafik',
             'statusChart',
             'guruBelumAbsen',
+            'aktivitasHariIni',
+            'pengaturan'
         ));
     }
 }

@@ -4,7 +4,7 @@
 
 <div class="bg-primary text-white rounded-4 p-4 shadow mb-4">
 
-    <div class="d-flex align-items-center">
+    <div class="d-flex justify-content-between align-items-center">
 
         @if($pengaturan && $pengaturan->logo)
 
@@ -36,6 +36,13 @@
             </h5>
 
         </div>
+             <div class="text-end">
+
+                <h3 class="fw-bold mb-0" id="clock"></h3>
+
+                <small id="today"></small>
+
+             </div>
 
     </div>
 
@@ -120,21 +127,181 @@
 
 </div>
 
-<div class="card shadow-sm mt-4">
+<div class="row mt-4">
 
-    <div class="card-header bg-white">
+    <div class="col-lg-8">
 
-        <h5 class="mb-0">
+        <div class="card shadow-sm h-100">
 
-            📈 Grafik Kehadiran 7 Hari Terakhir
+            <div class="card-header bg-white">
 
-        </h5>
+                <h5 class="mb-0">
+                    📈 Grafik Kehadiran 7 Hari Terakhir
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="grafikAbsensi" height="100"></canvas>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="card-body">
+    <div class="col-lg-4">
 
-        <canvas id="grafikAbsensi" height="100"></canvas>
+        <div class="card shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+                    🥧 Status Kehadiran Hari Ini
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="statusChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="row mt-4">
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+                    👨‍🏫 Guru Belum Absen Hari Ini
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                @if($guruBelumAbsen->count())
+
+                    <ul class="list-group">
+
+                        @foreach($guruBelumAbsen as $guru)
+
+                            <li class="list-group-item d-flex justify-content-between">
+
+                                {{ $guru->nama }}
+
+                                <span class="badge bg-danger">
+                                    Belum Absen
+                                </span>
+
+                            </li>
+
+                        @endforeach
+
+                    </ul>
+
+                @else
+
+                    <div class="alert alert-success mb-0">
+
+                        🎉 Semua guru sudah melakukan absensi hari ini.
+
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-header bg-white">
+
+                <h5 class="mb-0">
+                    📋 Aktivitas Hari Ini
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                @if($aktivitasHariIni->count())
+
+                    <div class="list-group list-group-flush">
+
+                        @foreach($aktivitasHariIni as $item)
+
+                            <div class="list-group-item">
+
+                                <div class="d-flex justify-content-between">
+
+                                    <div>
+
+                                        @if($item->status == 'Terlambat')
+
+                                            🟡
+
+                                        @else
+
+                                            🟢
+
+                                        @endif
+
+                                        <strong>{{ $item->guru->nama }}</strong>
+
+                                        <br>
+
+                                        <small class="text-muted">
+
+                                            {{ $item->status }}
+
+                                        </small>
+
+                                    </div>
+
+                                    <small>
+
+                                        {{ substr($item->jam_masuk,0,5) }}
+
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+                @else
+
+                    <div class="alert alert-light mb-0">
+
+                        Belum ada aktivitas hari ini.
+
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
 
     </div>
 
@@ -204,26 +371,6 @@ new Chart(ctx, {
 
 </script>
 
-<div class="card shadow-sm mt-4">
-
-    <div class="card-header bg-white">
-
-        <h5 class="mb-0">
-
-            🥧 Status Kehadiran Hari Ini
-
-        </h5>
-
-    </div>
-
-    <div class="card-body">
-
-        <canvas id="statusChart" height="120"></canvas>
-
-    </div>
-
-</div>
-
 <script>
 
 const statusCtx = document.getElementById('statusChart');
@@ -290,52 +437,29 @@ new Chart(statusCtx, {
 
 </script>
 
-<div class="card shadow-sm mt-4">
+<script>
 
-    <div class="card-header bg-white">
+function updateClock(){
 
-        <h5 class="mb-0">
-            👨‍🏫 Guru Belum Absen Hari Ini
-        </h5>
+    const now = new Date();
 
-    </div>
+    document.getElementById('clock').innerHTML =
+        now.toLocaleTimeString('id-ID');
 
-    <div class="card-body">
+    document.getElementById('today').innerHTML =
+        now.toLocaleDateString('id-ID',{
+            weekday:'long',
+            day:'numeric',
+            month:'long',
+            year:'numeric'
+        });
 
-        @if($guruBelumAbsen->count())
+}
 
-            <ul class="list-group">
+updateClock();
 
-                @foreach($guruBelumAbsen as $guru)
+setInterval(updateClock,1000);
 
-                    <li class="list-group-item d-flex justify-content-between">
-
-                        {{ $guru->nama }}
-
-                        <span class="badge bg-danger">
-
-                            Belum Absen
-
-                        </span>
-
-                    </li>
-
-                @endforeach
-
-            </ul>
-
-        @else
-
-            <div class="alert alert-success mb-0">
-
-                🎉 Semua guru sudah melakukan absensi hari ini.
-
-            </div>
-
-        @endif
-
-    </div>
-
-</div>
+</script>
 
 @endsection
