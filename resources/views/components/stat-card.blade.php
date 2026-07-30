@@ -14,10 +14,10 @@
 
                     </small>
 
-                    <h2 class="fw-bold mt-2">
-
-                        {{ $value }}
-
+                    <h2
+                        class="fw-bold mt-2 counter"
+                        data-target="{{ $value }}">
+                        0
                     </h2>
 
                     <small class="text-{{ $color }}">

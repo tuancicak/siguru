@@ -127,6 +127,164 @@
 
 </div>
 
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+            📈 Progress Kehadiran Hari Ini
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="progress" style="height:28px;">
+
+            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style="width: {{ $persentaseKehadiran }}%;">
+
+                {{ $persentaseKehadiran }}%
+
+            </div>
+
+        </div>
+
+        <div class="mt-3 text-center">
+
+            <strong>{{ $totalAbsensi }}</strong>
+
+            dari
+
+            <strong>{{ $totalGuru }}</strong>
+
+            guru sudah hadir.
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            🚨 Guru Terlambat Hari Ini
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        @if($guruTerlambat->count())
+
+            <ul class="list-group">
+
+                @foreach($guruTerlambat as $guru)
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            🔴 <strong>{{ $guru->guru->nama }}</strong>
+
+                        </div>
+
+                        <span class="badge bg-danger">
+
+                            {{ substr($guru->jam_masuk,0,5) }}
+
+                        </span>
+
+                    </li>
+
+                @endforeach
+
+            </ul>
+
+        @else
+
+            <div class="alert alert-success mb-0">
+
+                🎉 Tidak ada guru yang terlambat hari ini.
+
+            </div>
+
+        @endif
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            🏆 Guru Terajin Bulan Ini
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        @forelse($guruTerajin as $guru)
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <div>
+
+                    @if($loop->iteration == 1)
+
+                        🥇
+
+                    @elseif($loop->iteration == 2)
+
+                        🥈
+
+                    @elseif($loop->iteration == 3)
+
+                        🥉
+
+                    @else
+
+                        {{ $loop->iteration }}.
+
+                    @endif
+
+                    <strong>{{ $guru->nama }}</strong>
+
+                </div>
+
+                <span class="badge bg-success">
+
+                    {{ $guru->total_hadir }} Hari
+
+                </span>
+
+            </div>
+
+        @empty
+
+            <div class="alert alert-light mb-0">
+
+                Belum ada data.
+
+            </div>
+
+        @endforelse
+
+    </div>
+
+</div>
+
 <div class="row mt-4">
 
     <div class="col-lg-8">
@@ -459,6 +617,40 @@ function updateClock(){
 updateClock();
 
 setInterval(updateClock,1000);
+
+</script>
+
+<script>
+
+document.querySelectorAll('.counter').forEach(counter=>{
+
+    counter.innerText='0';
+
+    const update=()=>{
+
+        const target=+counter.dataset.target;
+
+        const current=+counter.innerText;
+
+        const increment=Math.ceil(target/30);
+
+        if(current<target){
+
+            counter.innerText=current+increment;
+
+            setTimeout(update,25);
+
+        }else{
+
+            counter.innerText=target;
+
+        }
+
+    }
+
+    update();
+
+});
 
 </script>
 

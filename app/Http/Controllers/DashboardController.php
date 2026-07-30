@@ -56,6 +56,26 @@ class DashboardController extends Controller
             ->take(8)
             ->get();
 
+        $guruTerlambat = Absensi::with('guru')
+            ->whereDate('tanggal', today())
+            ->where('status', 'Terlambat')
+            ->orderBy('jam_masuk')
+            ->get();
+
+        $persentaseKehadiran = $totalGuru > 0
+        ? round(($totalAbsensi / $totalGuru) * 100)
+        : 0;
+
+        $guruTerajin = Guru::withCount([
+        'absensis as total_hadir' => function ($q) {
+            $q->whereMonth('tanggal', now()->month)
+            ->whereYear('tanggal', now()->year);
+            }
+        ])
+            ->orderByDesc('total_hadir')
+            ->take(5)
+            ->get();
+
         $pengaturan = Pengaturan::first();
 
         return view('dashboard.index', compact(
@@ -69,7 +89,10 @@ class DashboardController extends Controller
             'statusChart',
             'guruBelumAbsen',
             'aktivitasHariIni',
-            'pengaturan'
+            'pengaturan',
+            'persentaseKehadiran',
+            'guruTerlambat',
+            'guruTerajin',
         ));
     }
 }
