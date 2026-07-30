@@ -21,6 +21,12 @@
 
                 Dashboard Operator
 
+                <small class="d-block mt-2 fs-6">
+
+                    Ringkasan aktivitas absensi guru hari ini.
+
+                </small>
+
             </h2>
 
             <h5 class="mb-0">
@@ -35,104 +41,28 @@
 
 </div>
 
-<div class="alert alert-success">
-
-    Selamat datang,
-    <strong>{{ Auth::user()->name }}</strong> 👋
-
-</div>
-
-@if($pengaturan)
-
-<div class="alert alert-primary">
-
-    🏫 <strong>{{ $pengaturan->nama_sekolah }}</strong>
-
-</div>
-
-@endif
-
 <div class="row">
 
-    <div class="col-md-4 mb-3">
+    <x-stat-card
+        title="Total Guru"
+        :value="$totalGuru"
+        subtitle="Guru Terdaftar"
+        icon="people-fill"
+        color="primary"/>
 
-        <div class="card shadow-sm border-start border-primary border-4">
+    <x-stat-card
+        title="Absensi Hari Ini"
+        :value="$totalAbsensi"
+        subtitle="Guru Sudah Absen"
+        icon="clipboard-check-fill"
+        color="success"/>
 
-            <div class="card-body">
-
-                <h6 class="text-muted">👨‍🏫 Total Guru</h6>
-
-                <h2>{{ $totalGuru }}</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-4 mb-3">
-
-        <div class="card shadow-sm border-start border-success border-4">
-
-            <div class="card-body">
-
-                <h6 class="text-muted">📝 Absensi Hari Ini</h6>
-
-                <h2>{{ $totalAbsensi }}</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-4 mb-3">
-
-        <div class="card shadow-sm border-start border-danger border-4">
-
-            <div class="card-body">
-
-                <h6 class="text-muted">⏰ Terlambat</h6>
-
-                <h2>{{ $totalTerlambat }}</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-4 mb-3">
-
-        <div class="card shadow-sm border-start border-info border-4">
-
-            <div class="card-body">
-
-                <h6 class="text-muted">🏁 Sudah Pulang</h6>
-
-                <h2>{{ $totalPulang }}</h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="col-md-4 mb-3">
-
-        <div class="card shadow-sm border-start border-warning border-4">
-
-            <div class="card-body">
-
-                <h6 class="text-muted">🏫 Masih di Sekolah</h6>
-
-                <h2>{{ $masihDiSekolah }}</h2>
-
-            </div>
-
-        </div>
-
-    </div>
+    <x-stat-card
+        title="Guru Terlambat"
+        :value="$totalTerlambat"
+        subtitle="Hari Ini"
+        icon="alarm-fill"
+        color="danger"/>
 
 </div>
 
