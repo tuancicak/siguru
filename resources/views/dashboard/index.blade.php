@@ -66,4 +66,142 @@
 
 </div>
 
+<div class="card mt-4">
+
+    <div class="card-body">
+
+        <h5 class="mb-4">
+
+            📋 Ringkasan Hari Ini
+
+        </h5>
+
+        <div class="row text-center">
+
+            <div class="col-md-4">
+
+                <h3 class="text-primary">
+
+                    {{ $totalGuru }}
+
+                </h3>
+
+                <small>Total Guru</small>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h3 class="text-success">
+
+                    {{ $totalAbsensi }}
+
+                </h3>
+
+                <small>Sudah Absen</small>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h3 class="text-danger">
+
+                    {{ $belumAbsen }}
+
+                </h3>
+
+                <small>Belum Absen</small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            📈 Grafik Kehadiran 7 Hari Terakhir
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="grafikAbsensi" height="100"></canvas>
+
+    </div>
+
+</div>
+
+<script>
+
+const ctx = document.getElementById('grafikAbsensi');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: [
+
+            @foreach($grafik as $item)
+
+                "{{ \Carbon\Carbon::parse($item->tanggal)->format('d M') }}",
+
+            @endforeach
+
+        ],
+
+        datasets: [{
+
+            label: 'Jumlah Absensi',
+
+            data: [
+
+                @foreach($grafik as $item)
+
+                    {{ $item->total }},
+
+                @endforeach
+
+            ],
+
+            borderWidth: 3,
+
+            tension: 0.3,
+
+            fill: true
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
 @endsection

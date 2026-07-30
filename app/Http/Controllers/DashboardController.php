@@ -5,37 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\Guru;
 use App\Models\Absensi;
 use App\Models\Pengaturan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-    $totalGuru = Guru::count();
+        $totalGuru = Guru::count();
 
-    $totalAbsensi = Absensi::whereDate('tanggal', today())->count();
+        $totalAbsensi = Absensi::whereDate('tanggal', today())->count();
 
-    $totalTerlambat = Absensi::whereDate('tanggal', today())
-        ->where('status', 'Terlambat')
-        ->count();
+        $belumAbsen = $totalGuru - $totalAbsensi;
 
-    $totalPulang = Absensi::whereDate('tanggal', today())
-        ->whereNotNull('jam_pulang')
-        ->count();
+        $totalTerlambat = Absensi::whereDate('tanggal', today())
+            ->where('status', 'Terlambat')
+            ->count();
 
-    $masihDiSekolah = Absensi::whereDate('tanggal', today())
-        ->whereNull('jam_pulang')
-        ->count();
+        $totalPulang = Absensi::whereDate('tanggal', today())
+            ->whereNotNull('jam_pulang')
+            ->count();
 
-    $pengaturan = Pengaturan::first();
+        $masihDiSekolah = Absensi::whereDate('tanggal', today())
+            ->whereNull('jam_pulang')
+            ->count();
 
-    return view('dashboard.index', compact(
-        'totalGuru',
-        'totalAbsensi',
-        'totalTerlambat',
-        'totalPulang',
-        'masihDiSekolah',
-        'pengaturan'
-    ));
+        $grafik = Absensi::select(
+        DB::raw('DATE(tanggal) as tanggal'),
+        DB::raw('COUNT(*) as total')
+        )
+        ->whereDate('tanggal', '>=', now()->subDays(6))
+        ->groupBy('tanggal')
+        ->orderBy('tanggal')
+        ->get();
+
+        $pengaturan = Pengaturan::first();
+
+        return view('dashboard.index', compact(
+            'totalGuru',
+            'totalAbsensi',
+            'totalTerlambat',
+            'belumAbsen',
+            'pengaturan',
+            'grafik',
+        ));
     }
 }
