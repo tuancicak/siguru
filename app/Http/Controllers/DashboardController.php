@@ -30,14 +30,27 @@ class DashboardController extends Controller
             ->whereNull('jam_pulang')
             ->count();
 
-        $grafik = Absensi::select(
+    $grafik = Absensi::select(
         DB::raw('DATE(tanggal) as tanggal'),
         DB::raw('COUNT(*) as total')
-        )
-        ->whereDate('tanggal', '>=', now()->subDays(6))
-        ->groupBy('tanggal')
-        ->orderBy('tanggal')
-        ->get();
+    )
+    ->whereDate('tanggal', '>=', now()->subDays(6))
+    ->groupBy('tanggal')
+    ->orderBy('tanggal')
+    ->get();
+
+    $statusChart = Absensi::select(
+        'status',
+        DB::raw('COUNT(*) as total')
+    )
+
+    ->whereDate('tanggal', today())
+    ->groupBy('status')
+    ->get();
+
+    $guruBelumAbsen = Guru::whereDoesntHave('absensis', function ($q) {
+    $q->whereDate('tanggal', today());
+    })->get();
 
         $pengaturan = Pengaturan::first();
 
@@ -48,6 +61,8 @@ class DashboardController extends Controller
             'belumAbsen',
             'pengaturan',
             'grafik',
+            'statusChart',
+            'guruBelumAbsen',
         ));
     }
 }

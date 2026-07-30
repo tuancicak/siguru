@@ -204,4 +204,138 @@ new Chart(ctx, {
 
 </script>
 
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+
+            🥧 Status Kehadiran Hari Ini
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="statusChart" height="120"></canvas>
+
+    </div>
+
+</div>
+
+<script>
+
+const statusCtx = document.getElementById('statusChart');
+
+new Chart(statusCtx, {
+
+    type: 'pie',
+
+    data: {
+
+        labels: [
+
+            @foreach($statusChart as $item)
+
+                "{{ $item->status }}",
+
+            @endforeach
+
+        ],
+
+        datasets: [{
+
+            data: [
+
+                @foreach($statusChart as $item)
+
+                    {{ $item->total }},
+
+                @endforeach
+
+            ],
+
+            backgroundColor: [
+
+                '#28a745',
+                '#ffc107',
+                '#17a2b8',
+                '#007bff',
+                '#dc3545'
+
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                position: 'bottom'
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+<div class="card shadow-sm mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0">
+            👨‍🏫 Guru Belum Absen Hari Ini
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        @if($guruBelumAbsen->count())
+
+            <ul class="list-group">
+
+                @foreach($guruBelumAbsen as $guru)
+
+                    <li class="list-group-item d-flex justify-content-between">
+
+                        {{ $guru->nama }}
+
+                        <span class="badge bg-danger">
+
+                            Belum Absen
+
+                        </span>
+
+                    </li>
+
+                @endforeach
+
+            </ul>
+
+        @else
+
+            <div class="alert alert-success mb-0">
+
+                🎉 Semua guru sudah melakukan absensi hari ini.
+
+            </div>
+
+        @endif
+
+    </div>
+
+</div>
+
 @endsection
