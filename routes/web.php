@@ -24,6 +24,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/guru/absen-pulang', [GuruDashboardController::class, 'absenPulang'])
     ->name('guru.absen-pulang');
 
+    Route::get('/guru/{guru}/qrcode', [GuruController::class, 'qrcode'])
+    ->name('guru.qrcode');
+
 });
 
 Route::middleware(['auth', 'role:operator'])->group(function () {

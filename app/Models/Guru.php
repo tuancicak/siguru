@@ -17,6 +17,7 @@ class Guru extends Model
         'jenis_kelamin',
         'alamat',
         'no_hp',
+        'qr_code',
     ];
 
     public function user(): BelongsTo

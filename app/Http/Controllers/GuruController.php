@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Requests\StoreGuruRequest;
 use App\Http\Requests\UpdateGuruRequest;
 use App\Models\Guru;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class GuruController extends Controller
@@ -50,6 +52,7 @@ class GuruController extends Controller
             'jabatan' => $request->jabatan,
             'jenis_kelamin' => $request->jenis_kelamin,
             'no_hp' => $request->no_hp,
+            'qr_code' => Str::uuid(),
         ]);
 
         return redirect()
@@ -119,5 +122,16 @@ public function update(UpdateGuruRequest $request, string $id)
     return redirect()
         ->route('guru.index')
         ->with('success', 'Data guru berhasil dihapus.');
+}
+
+public function qrcode(Guru $guru)
+{
+    if (!$guru->qr_code) {
+        $guru->update([
+            'qr_code' => Str::uuid(),
+        ]);
+    }
+
+    return view('guru.qrcode', compact('guru'));
 }
 }

@@ -86,6 +86,12 @@
                             <a href="{{ route('guru.edit', $guru->id) }}" class="btn btn-outline-warning btn-sm rounded-pill">
                                 Edit
                             </a>
+                            
+                            <a href="{{ route('guru.qrcode', $guru->id) }}" class="btn btn-outline-primary btn-sm rounded-pill">
+
+                                QR Code
+
+                            </a>
 
                             <form action="{{ route('guru.destroy', $guru->id) }}"
                                 method="POST"
@@ -98,6 +104,9 @@
                                 <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill">
                                     Hapus
                                 </button>
+
+                                <a href="{{ route('guru.qrcode', $guru->id) }}"
+
 
                             </form>
                         </td>
