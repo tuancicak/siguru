@@ -12,19 +12,31 @@ class GuruDashboardController extends Controller
 {
     public function index()
     {
-    $guru = Guru::where('user_id', Auth::id())->first();
+        $guru = Guru::where('user_id', Auth::id())->first();
 
-    $absensiHariIni = null;
+        $absensiHariIni = null;
 
-    if ($guru) {
-        $absensiHariIni = Absensi::where('guru_id', $guru->id)
-            ->whereDate('tanggal', today())
-            ->first();
-    }
+        if ($guru) {
+            $absensiHariIni = Absensi::where('guru_id', $guru->id)
+                ->whereDate('tanggal', today())
+                ->first();
+        }
 
-    return view('guru.dashboard', compact(
-        'absensiHariIni'
-    ));
+        $riwayat = [];
+
+        if ($guru) {
+
+            $riwayat = Absensi::where('guru_id', $guru->id)
+                ->latest('tanggal')
+                ->take(5)
+                ->get();
+
+        }
+
+        return view('guru.dashboard', compact(
+            'absensiHariIni',
+            'riwayat'
+        ));
     }
 
     public function absenMasuk()

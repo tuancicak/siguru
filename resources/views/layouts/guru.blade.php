@@ -30,13 +30,23 @@
 
             <nav class="navbar navbar-light bg-white shadow-sm px-4">
 
-                <span class="fw-bold">
+                <span class="fw-bold fs-5">
                     Dashboard Guru
                 </span>
 
-                <div>
+                <div class="d-flex align-items-center gap-3">
 
-                    {{ auth()->user()->name }}
+                    <span class="fw-semibold">
+                        👋 {{ auth()->user()->name }}
+                    </span>
+
+                    <form action="{{ route('logout') }}" method="POST" class="m-0">
+                        @csrf
+
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            🚪 Logout
+                        </button>
+                    </form>
 
                 </div>
 

@@ -4,24 +4,27 @@
 
 <div class="container">
 
-    <h2 class="mb-4">
+<div class="bg-primary text-white rounded-4 p-4 shadow mb-4">
 
-        Dashboard Guru
+    <h2 class="fw-bold mb-2">
+
+        Halo, {{ auth()->user()->name }} 👋
 
     </h2>
 
-    <h5 class="mb-4">
+    <p class="mb-0">
 
-        Selamat datang,
-        <strong>{{ auth()->user()->name }}</strong> 👋
+        Selamat datang di Sistem Informasi Guru (SIGURU)
 
-    </h5>
+    </p>
+
+</div>
 
     <div class="row">
 
         <div class="col-md-4 mb-3">
 
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border-0 border-start border-4 border-primary">
 
                 <div class="card-body text-center">
 
@@ -41,7 +44,7 @@
 
         <div class="col-md-4 mb-3">
 
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border-0 border-start border-4 border-success">
 
                 <div class="card-body text-center">
 
@@ -57,7 +60,7 @@
 
         <div class="col-md-4 mb-3">
 
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border-0 border-start border-4 border-warning">
 
                 <div class="card-body text-center">
 
@@ -163,7 +166,7 @@
 
             @csrf
 
-            <button class="btn btn-success btn-lg">
+            <button class="btn btn-success btn-lg w-100 shadow">
 
                 🟢 Absen Masuk
 
@@ -177,7 +180,7 @@
 
             @csrf
 
-            <button class="btn btn-danger btn-lg">
+            <button class="btn btn-danger btn-lg w-100 shadow">
 
                 🔴 Absen Pulang
 
@@ -187,13 +190,83 @@
 
         @else
 
-        <button class="btn btn-secondary btn-lg" disabled>
+        <button class="btn btn-secondary btn-lg w-100">
 
             ✔ Absensi Hari Ini Selesai
 
         </button>
 
         @endif
+
+    </div>
+
+        <div class="card shadow-sm mt-5">
+
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+
+                📋 Riwayat Absensi Terakhir
+
+            </h5>
+
+        </div>
+
+        <div class="card-body">
+
+            @forelse($riwayat as $item)
+
+                <div class="d-flex justify-content-between border-bottom py-2">
+
+                    <div>
+
+                        <strong>
+
+                            {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}
+
+                        </strong>
+
+                        <br>
+
+                        <small>
+
+                            {{ $item->status }}
+
+                        </small>
+
+                    </div>
+
+                    <div class="text-end">
+
+                        <small>
+
+                            {{ $item->jam_masuk }}
+
+                        </small>
+
+                        <br>
+
+                        <small>
+
+                            {{ $item->jam_pulang ?? '-' }}
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+            @empty
+
+                <p class="text-muted mb-0">
+
+                    Belum ada riwayat absensi.
+
+                </p>
+
+            @endforelse
+
+        </div>
 
     </div>
 
