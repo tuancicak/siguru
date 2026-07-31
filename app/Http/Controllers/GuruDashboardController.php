@@ -22,6 +22,29 @@ class GuruDashboardController extends Controller
                 ->first();
         }
 
+        $totalHadir = 0;
+        $totalTerlambat = 0;
+
+        if ($guru) {
+
+            $totalHadir = Absensi::where('guru_id', $guru->id)
+                ->where('status', 'Hadir')
+                ->count();
+
+            $totalTerlambat = Absensi::where('guru_id', $guru->id)
+                ->where('status', 'Terlambat')
+                ->count();
+
+        }
+
+        $totalHadir = Absensi::where('guru_id', $guru->id)
+            ->where('status', 'Hadir')
+            ->count();
+
+        $totalTerlambat = Absensi::where('guru_id', $guru->id)
+            ->where('status', 'Terlambat')
+            ->count();
+
         $riwayat = [];
 
         if ($guru) {
@@ -35,7 +58,9 @@ class GuruDashboardController extends Controller
 
         return view('guru.dashboard', compact(
             'absensiHariIni',
-            'riwayat'
+            'riwayat',
+            'totalHadir',
+            'totalTerlambat'
         ));
     }
 

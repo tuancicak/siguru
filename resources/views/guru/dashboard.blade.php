@@ -4,21 +4,41 @@
 
 <div class="container">
 
-<div class="bg-primary text-white rounded-4 p-4 shadow mb-4">
+    <div class="bg-primary text-white rounded-4 p-4 shadow mb-4">
 
-    <h2 class="fw-bold mb-2">
+        <div class="card-body text-white p-4"
+            style="background: linear-gradient(135deg,#2563eb,#1d4ed8);">
 
-        Halo, {{ auth()->user()->name }} 👋
+            <div class="row align-items-center">
 
-    </h2>
+                <div class="col-md-9">
 
-    <p class="mb-0">
+                    <h2 class="fw-bold mb-2">
+                        👋 Halo, {{ auth()->user()->name }}
+                    </h2>
 
-        Selamat datang di Sistem Informasi Guru (SIGURU)
+                    <p class="mb-2">
+                        Selamat datang di Sistem Informasi Guru (SIGURU)
+                    </p>
 
-    </p>
+                    <small class="opacity-75">
+                        {{ now()->translatedFormat('l, d F Y') }}
+                    </small>
 
-</div>
+                </div>
+
+                <div class="col-md-3 text-end">
+
+                    <i class="bi bi-person-workspace"
+                    style="font-size:70px;"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <div class="row">
 
@@ -28,7 +48,10 @@
 
                 <div class="card-body text-center">
 
-                    <h5>📅 Hari Ini</h5>
+                    <h5>
+                        <i class="bi bi-calendar-event-fill text-primary"></i>
+                        Hari Ini
+                    </h5>
 
                     <h4>
 
@@ -48,7 +71,10 @@
 
                 <div class="card-body text-center">
 
-                    <h5>🕒 Jam Sekarang</h5>
+                    <h5>
+                        <i class="bi bi-clock-fill text-success"></i>
+                        Jam Sekarang
+                    </h5>
 
                     <h2 id="clock"></h2>
 
@@ -64,25 +90,26 @@
 
                 <div class="card-body text-center">
 
-                    <h5>📋 Status Absensi</h5>
+                    <h5>
+                        <i class="bi bi-clipboard-check-fill text-warning"></i>
+                        Status Absensi
+                    </h5>
 
                     @if($absensiHariIni)
 
                         @if($absensiHariIni->status == 'Hadir')
 
-                            <h4 class="text-success">
-
-                                ✅ Hadir
-
-                            </h4>
+                            <span class="badge bg-success fs-6 px-4 py-2">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Hadir
+                            </span>
 
                         @elseif($absensiHariIni->status == 'Terlambat')
 
-                            <h4 class="text-warning">
-
-                                ⏰ Terlambat
-
-                            </h4>
+                            <span class="badge bg-warning text-dark fs-6 px-4 py-2">
+                                <i class="bi bi-alarm-fill"></i>
+                                Terlambat
+                            </span>
 
                         @else
 
@@ -166,7 +193,7 @@
 
             @csrf
 
-            <button class="btn btn-success btn-lg w-100 shadow">
+            <button class="btn btn-success btn-lg w-100 rounded-4 shadow py-3">
 
                 🟢 Absen Masuk
 
@@ -180,7 +207,7 @@
 
             @csrf
 
-            <button class="btn btn-danger btn-lg w-100 shadow">
+            <button class="btn btn-danger btn-lg w-100 rounded-4 shadow py-3">
 
                 🔴 Absen Pulang
 
@@ -204,11 +231,8 @@
 
         <div class="card-header bg-white">
 
-            <h5 class="mb-0">
-
-                📋 Riwayat Absensi Terakhir
-
-            </h5>
+            <i class="bi bi-clock-history"></i>
+            Riwayat Absensi Terakhir
 
         </div>
 
