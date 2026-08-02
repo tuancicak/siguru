@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\LaporanController;
 
 // Halaman utama
 Route::redirect('/', '/login');
@@ -44,6 +45,12 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
     Route::resource('absensi', AbsensiController::class);
 
     Route::resource('pengaturan', PengaturanController::class);
+
+    Route::get('/laporan', [LaporanController::class, 'index'])
+    ->name('laporan.index');
+
+    Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])
+    ->name('laporan.pdf');
 
 });
 

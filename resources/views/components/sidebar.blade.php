@@ -76,8 +76,9 @@
 
         </a>
 
-        <a href="#"
-           class="list-group-item list-group-item-action border-0 rounded mb-2 bg-dark text-white">
+        <a href="{{ route('laporan.index') }}"
+            class="list-group-item list-group-item-action border-0 rounded mb-2
+            {{ request()->routeIs('laporan.*') ? 'active' : 'bg-dark text-white' }}">
 
             <i class="bi bi-bar-chart-fill me-2"></i>
                 Laporan
