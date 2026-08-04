@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LocationHelper;
+use Illuminate\Http\Request;
 use App\Models\Guru;
 use App\Models\Absensi;
 use App\Models\Pengaturan;
