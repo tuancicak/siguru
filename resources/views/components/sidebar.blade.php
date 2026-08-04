@@ -1,108 +1,127 @@
-<div class="bg-dark text-white vh-100 shadow-lg p-3">
+@php
+    $pengaturan = \App\Models\Pengaturan::first();
+@endphp
 
+<div class="bg-dark text-white d-flex flex-column vh-100 shadow-lg p-4">
+
+    {{-- Logo --}}
     <div class="text-center mb-4">
-
-        @php
-            $pengaturan = \App\Models\Pengaturan::first();
-        @endphp
 
         @if($pengaturan && $pengaturan->logo)
 
             <img
                 src="{{ asset('storage/'.$pengaturan->logo) }}"
-                width="80"
-                class="rounded-circle shadow mb-3">
+                width="75"
+                class="rounded-circle shadow border border-2 border-light mb-3">
 
         @endif
 
         <h5 class="fw-bold text-warning mb-1">
-
             {{ $pengaturan->nama_sekolah ?? 'SIGURU' }}
-
         </h5>
 
         <small class="text-secondary">
-
             Sistem Informasi Guru
-
         </small>
 
     </div>
 
-    <hr class="border-secondary">
+    {{-- User --}}
+    <div class="bg-secondary bg-opacity-25 rounded-4 p-3 mb-4">
 
-    <div class="text-center text-white mb-3">
+        <div class="d-flex align-items-center">
 
-        <small>
+            <div class="bg-primary rounded-circle d-flex justify-content-center align-items-center"
+                style="width:50px;height:50px;">
 
-            Login sebagai
+                <i class="bi bi-person-fill fs-4"></i>
 
-        </small>
+            </div>
 
-        <h6 class="mb-0">
+            <div class="ms-3">
 
-            {{ Auth::user()->name }}
+                <small class="text-secondary">
 
-        </h6>
+                    Login sebagai
+
+                </small>
+
+                <div class="fw-bold">
+
+                    {{ Auth::user()->name }}
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="list-group list-group-flush">
+    {{-- Menu --}}
+    <div class="list-group list-group-flush flex-grow-1">
 
         <a href="{{ route('dashboard') }}"
-           class="list-group-item list-group-item-action border-0 rounded mb-2
-           {{ request()->routeIs('dashboard') ? 'active' : 'bg-dark text-white' }}">
+            class="list-group-item list-group-item-action border-0 rounded-3 mb-2 {{ request()->routeIs('dashboard') ? 'active' : 'bg-dark text-white' }}">
 
-            <i class="bi bi-house-door-fill me-2"></i>
-                Dashboard
+            <i class="bi bi-grid-fill me-2"></i>
+
+            Dashboard
 
         </a>
 
         <a href="{{ route('guru.index') }}"
-           class="list-group-item list-group-item-action border-0 rounded mb-2
-           {{ request()->routeIs('guru.*') ? 'active' : 'bg-dark text-white' }}">
+            class="list-group-item list-group-item-action border-0 rounded-3 mb-2 {{ request()->routeIs('guru.*') ? 'active' : 'bg-dark text-white' }}">
 
             <i class="bi bi-people-fill me-2"></i>
-                Data Guru
+
+            Data Guru
 
         </a>
 
         <a href="{{ route('absensi.index') }}"
-           class="list-group-item list-group-item-action border-0 rounded mb-2
-           {{ request()->routeIs('absensi.*') ? 'active' : 'bg-dark text-white' }}">
+            class="list-group-item list-group-item-action border-0 rounded-3 mb-2 {{ request()->routeIs('absensi.*') ? 'active' : 'bg-dark text-white' }}">
 
-            <i class="bi bi-clipboard-check-fill me-2"></i>
-                Absensi
+            <i class="bi bi-calendar-check-fill me-2"></i>
+
+            Absensi
 
         </a>
 
         <a href="{{ route('laporan.index') }}"
-            class="list-group-item list-group-item-action border-0 rounded mb-2
-            {{ request()->routeIs('laporan.*') ? 'active' : 'bg-dark text-white' }}">
+            class="list-group-item list-group-item-action border-0 rounded-3 mb-2 {{ request()->routeIs('laporan.*') ? 'active' : 'bg-dark text-white' }}">
 
             <i class="bi bi-bar-chart-fill me-2"></i>
-                Laporan
+
+            Laporan
 
         </a>
 
         <a href="{{ route('pengaturan.index') }}"
-           class="list-group-item list-group-item-action border-0 rounded mb-2
-           {{ request()->routeIs('pengaturan.*') ? 'active' : 'bg-dark text-white' }}">
+            class="list-group-item list-group-item-action border-0 rounded-3 mb-2 {{ request()->routeIs('pengaturan.*') ? 'active' : 'bg-dark text-white' }}">
 
             <i class="bi bi-gear-fill me-2"></i>
-                Pengaturan
+
+            Pengaturan
 
         </a>
 
     </div>
 
-    <div class="mt-5">
+    {{-- Footer --}}
+    <div class="mt-4">
+
+        <small class="text-secondary d-block text-center mb-3">
+
+            SIGURU v1.0
+
+        </small>
 
         <form action="{{ route('logout') }}" method="POST">
 
             @csrf
 
-            <button class="btn btn-danger w-100">
+            <button class="btn btn-outline-danger w-100 rounded-3">
 
                 <i class="bi bi-box-arrow-right me-2"></i>
 

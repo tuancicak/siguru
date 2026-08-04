@@ -166,6 +166,135 @@
                      @endif
 
                 </div>
+
+                <hr class="my-4">
+
+                <h5 class="fw-bold mb-3">
+                    🔐 Keamanan Absensi
+                </h5>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Latitude Sekolah
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="latitude"
+                            class="form-control"
+                            value="{{ old('latitude',$pengaturan->latitude) }}">
+
+                        <button type="button" class="btn btn-outline-primary mt-2" onclick="ambilLokasi()">
+
+                        📍 Ambil Lokasi Sekolah
+
+                        </button>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label class="form-label">
+
+                            Longitude Sekolah
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="longitude"
+                            class="form-control"
+                            value="{{ old('longitude',$pengaturan->longitude) }}">
+
+                    </div>
+
+                </div>
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+
+                        Radius Absensi (Meter)
+
+                    </label>
+
+                    <input
+                        type="number"
+                        name="radius"
+                        class="form-control"
+                        value="{{ old('radius',$pengaturan->radius ?? 100) }}">
+
+                </div>
+
+                <div class="form-check form-switch mb-2">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="use_gps"
+                        {{ $pengaturan->use_gps ? 'checked' : '' }}>
+
+                    <label class="form-check-label">
+
+                        Gunakan GPS
+
+                    </label>
+
+                </div>
+
+                <div class="form-check form-switch mb-2">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="use_selfie"
+                        {{ $pengaturan->use_selfie ? 'checked' : '' }}>
+
+                    <label class="form-check-label">
+
+                        Wajib Selfie Saat Absen
+
+                    </label>
+
+                </div>
+
+                <div class="form-check form-switch mb-2">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="use_device"
+                        {{ $pengaturan->use_device ? 'checked' : '' }}>
+
+                    <label class="form-check-label">
+
+                        Validasi Device
+
+                    </label>
+
+                </div>
+
+                <div class="form-check form-switch mb-4">
+
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="use_working_hours"
+                        {{ $pengaturan->use_working_hours ? 'checked' : '' }}>
+
+                    <label class="form-check-label">
+
+                        Gunakan Jam Kerja
+
+                    </label>
+
+                </div>
+
                 <button class="btn btn-primary">
 
                     💾 Simpan
@@ -179,5 +308,43 @@
     </div>
 
 </div>
+
+<script>
+
+function ambilLokasi(){
+
+    if(!navigator.geolocation){
+
+        alert('Browser tidak mendukung GPS');
+
+        return;
+
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            document.querySelector('[name=latitude]').value =
+                position.coords.latitude;
+
+            document.querySelector('[name=longitude]').value =
+                position.coords.longitude;
+
+            alert('Lokasi berhasil diambil.');
+
+        },
+
+        function(){
+
+            alert('Gagal mengambil lokasi.');
+
+        }
+
+    );
+
+}
+
+</script>
 
 @endsection

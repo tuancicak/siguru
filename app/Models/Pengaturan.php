@@ -26,5 +26,19 @@ class Pengaturan extends Model
 
         'batas_terlambat',
 
+        'latitude',
+
+        'longitude',
+
+        'radius',
+
+        'use_gps',
+
+        'use_selfie',
+
+        'use_device',
+        
+        'use_working_hours',
+
     ];
 }

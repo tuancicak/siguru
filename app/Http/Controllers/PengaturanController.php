@@ -39,6 +39,14 @@ class PengaturanController extends Controller
         'jam_masuk'       => 'required',
         'jam_pulang'      => 'nullable',
         'batas_terlambat' => 'required',
+        'latitude' => 'nullable|numeric',
+        'longitude' => 'nullable|numeric',
+        'radius' => 'required|integer|min:10|max:1000',
+
+        'use_gps' => 'nullable',
+        'use_selfie' => 'nullable',
+        'use_device' => 'nullable',
+        'use_working_hours' => 'nullable',
     ]);
 
         $pengaturan = Pengaturan::first();
@@ -54,20 +62,29 @@ class PengaturanController extends Controller
 
         }
 
-    Pengaturan::updateOrCreate(
-        ['id' => 1],
-        [
-            'nama_sekolah'    => $request->nama_sekolah,
-            'alamat'          => $request->alamat,
-            'telepon'         => $request->telepon,
-            'email'           => $request->email,
-            'website'         => $request->website,
-            'logo'            => $logo,
-            'jam_masuk'       => $request->jam_masuk,
-            'jam_pulang'      => $request->jam_pulang,
-            'batas_terlambat' => $request->batas_terlambat,
-        ]
-    );
+        Pengaturan::updateOrCreate(
+            ['id' => 1],
+            [
+                'nama_sekolah'    => $request->nama_sekolah,
+                'alamat'          => $request->alamat,
+                'telepon'         => $request->telepon,
+                'email'           => $request->email,
+                'website'         => $request->website,
+                'logo'            => $logo,
+                'jam_masuk'       => $request->jam_masuk,
+                'jam_pulang'      => $request->jam_pulang,
+                'batas_terlambat' => $request->batas_terlambat,
+
+                // ===== Keamanan Absensi =====
+                'latitude'         => $request->latitude,
+                'longitude'        => $request->longitude,
+                'radius'           => $request->radius,
+                'use_gps'          => $request->has('use_gps'),
+                'use_selfie'       => $request->has('use_selfie'),
+                'use_device'       => $request->has('use_device'),
+                'use_working_hours'=> $request->has('use_working_hours'),
+            ]
+        );
 
     return redirect()
         ->route('pengaturan.index')
