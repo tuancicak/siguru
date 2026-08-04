@@ -14,6 +14,8 @@ class Absensi extends Model
         'jam_masuk',
         'jam_pulang',
         'status',
+        'latitude',
+        'longitude',
     ];
 
     public function guru(): BelongsTo

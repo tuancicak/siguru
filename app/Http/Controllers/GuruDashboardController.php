@@ -64,7 +64,7 @@ class GuruDashboardController extends Controller
         ));
     }
 
-    public function absenMasuk()
+   public function absenMasuk(\Illuminate\Http\Request $request)
     {
         $guru = Guru::where('user_id', Auth::id())->first();
 
@@ -96,6 +96,8 @@ class GuruDashboardController extends Controller
             'jam_masuk'   => $jamSekarang,
             'status'      => $status,
             'keterangan'  => null,
+            'latitude'  => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
 
         return back()->with(

@@ -189,9 +189,19 @@
 
         @if(!$absensiHariIni)
 
-        <form action="{{ route('guru.absen-masuk') }}" method="POST">
+        <form id="formAbsen" action="{{ route('guru.absen-masuk') }}" method="POST">
 
             @csrf
+
+            <input
+                type="hidden"
+                name="latitude"
+                id="latitude">
+
+            <input
+                type="hidden"
+                name="longitude"
+                id="longitude">
 
             <button class="btn btn-success btn-lg w-100 rounded-4 shadow py-3">
 
@@ -310,6 +320,46 @@ function updateClock(){
 setInterval(updateClock,1000);
 
 updateClock();
+
+</script>
+
+<script>
+
+const form = document.getElementById("formAbsen");
+
+if(form){
+
+    form.addEventListener("submit",function(e){
+
+        e.preventDefault();
+
+        if(!navigator.geolocation){
+
+            alert("Browser tidak mendukung GPS");
+
+            return;
+
+        }
+
+        navigator.geolocation.getCurrentPosition(function(position){
+
+            document.getElementById("latitude").value =
+                position.coords.latitude;
+
+            document.getElementById("longitude").value =
+                position.coords.longitude;
+
+            form.submit();
+
+        },function(){
+
+            alert("Aktifkan GPS terlebih dahulu.");
+
+        });
+
+    });
+
+}
 
 </script>
 
