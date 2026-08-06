@@ -387,6 +387,10 @@ if(form){
                     class="w-100 rounded">
                 </video>
 
+                <img
+                    id="preview"
+                    class="img-fluid rounded d-none mt-2">
+
                 <canvas
                     id="canvas"
                     class="d-none">
@@ -395,6 +399,22 @@ if(form){
             </div>
 
             <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary d-none"
+                    id="retake">
+
+                    🔄 Ulangi
+
+                </button>
+
+                <button
+                    class="btn btn-success d-none"
+                    id="usePhoto">
+
+                    ✅ Gunakan Foto
+
+                </button>
 
                 <button
                     class="btn btn-primary"
@@ -454,13 +474,57 @@ document.getElementById('capture').onclick = function(){
 
     const image = canvas.toDataURL('image/jpeg',0.8);
 
+    document.getElementById('preview').src = image;
+
+    document.getElementById('preview').classList.remove('d-none');
+
+    video.classList.add('d-none');
+
+    document.getElementById('capture').classList.add('d-none');
+
+    document.getElementById('retake').classList.remove('d-none');
+
+    document.getElementById('usePhoto').classList.remove('d-none');
+
+    document.getElementById('retake').onclick = function(){
+
+        video.classList.remove('d-none');
+
+        document.getElementById('preview').classList.add('d-none');
+
+        document.getElementById('capture').classList.remove('d-none');
+
+        document.getElementById('retake').classList.add('d-none');
+
+        document.getElementById('usePhoto').classList.add('d-none');
+
+    }
+
+    document.getElementById('retake').onclick = function(){
+
+        video.classList.remove('d-none');
+
+        document.getElementById('preview').classList.add('d-none');
+
+        document.getElementById('capture').classList.remove('d-none');
+
+        document.getElementById('retake').classList.add('d-none');
+
+        document.getElementById('usePhoto').classList.add('d-none');
+
+    }
+
+    document.getElementById('usePhoto').onclick = function(){
+
+        stream.getTracks().forEach(track => track.stop());
+
+        modal.hide();
+
+        ambilLokasi();
+
+    }
+
     document.getElementById('selfie').value = image;
-
-    stream.getTracks().forEach(track=>track.stop());
-
-    modal.hide();
-
-    ambilLokasi();
 
 }
 
