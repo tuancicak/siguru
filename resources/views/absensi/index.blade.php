@@ -90,6 +90,7 @@
                         <th>Jam Pulang</th>
                         <th>Status</th>
                         <th>Aksi</th>
+                        <th>Selfie</th>
                     </tr>
                 </thead>
 
@@ -152,7 +153,82 @@
                                 </a>
 
                             </td>
+
+                            <td class="text-center">
+
+                                @if($absensi->selfie)
+
+                                    <img
+                                        src="{{ asset('storage/'.$absensi->selfie) }}"
+                                        width="60"
+                                        height="60"
+                                        class="rounded-circle shadow"
+                                        style="object-fit:cover; cursor:pointer"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#fotoModal{{ $absensi->id }}">
+
+                                @else
+
+                                    <span class="text-muted">
+
+                                        -
+
+                                    </span>
+
+                                @endif
+
+                            </td>
+
                         </tr>
+
+                        <div class="modal fade" id="fotoModal{{ $absensi->id }}" tabindex="-1">
+
+                            <div class="modal-dialog modal-dialog-centered">
+
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+
+                                        <h5 class="modal-title">
+
+                                            📷 Selfie Guru
+
+                                        </h5>
+
+                                        <button type="button"
+                                                class="btn-close"
+                                                data-bs-dismiss="modal">
+                                        </button>
+
+                                    </div>
+
+                                    <div class="modal-body text-center">
+
+                                        <img
+                                            src="{{ asset('storage/'.$absensi->selfie) }}"
+                                            class="img-fluid rounded shadow">
+
+                                        <hr>
+
+                                        <h5>
+
+                                            {{ $absensi->guru->nama }}
+
+                                        </h5>
+
+                                        <p class="text-muted mb-0">
+
+                                            {{ $absensi->tanggal }}
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     @empty
 
