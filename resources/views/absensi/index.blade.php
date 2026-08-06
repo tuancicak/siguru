@@ -145,6 +145,13 @@
 
                             <td>
 
+                                <a href="{{ route('absensi.show', $absensi) }}"
+                                class="btn btn-info btn-sm">
+
+                                    👁 Detail
+
+                                </a>
+
                                 <a href="{{ route('absensi.edit', $absensi) }}"
                                 class="btn btn-primary btn-sm">
 
