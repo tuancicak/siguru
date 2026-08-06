@@ -189,56 +189,20 @@
 
         @if(!$absensiHariIni)
 
-<form
-    action="{{ route('guru.absen-masuk') }}"
-    method="POST"
-    enctype="multipart/form-data">
+<form id="absenForm"
+      action="{{ route('guru.absen-masuk') }}"
+      method="POST">
 
     @csrf
 
-    @if($pengaturan && $pengaturan->use_selfie)
+    <input type="hidden" name="latitude" id="latitude">
+    <input type="hidden" name="longitude" id="longitude">
+    <input type="hidden" name="selfie" id="selfie">
 
-<div class="mb-3">
-
-    <label class="form-label">
-        📷 Selfie
-    </label>
-
-    <input
-        type="file"
-        name="selfie"
-        class="form-control"
-        accept="image/*"
-        capture="user"
-        required>
-
-</div>
-
-@endif
-
-    @if($pengaturan && $pengaturan->use_selfie)
-
-        <div class="mb-3">
-
-            <label class="form-label">
-
-                Selfie
-
-            </label>
-
-            <input
-                type="file"
-                name="selfie"
-                class="form-control"
-                accept="image/*"
-                capture="user"
-                required>
-
-        </div>
-
-    @endif
-
-    <button class="btn btn-success btn-lg w-100 rounded-4 shadow py-3">
+    <button
+        type="button"
+        id="btnAbsen"
+        class="btn btn-success btn-lg w-100 rounded-4 shadow py-3">
 
         🟢 Absen Masuk
 
@@ -393,6 +357,148 @@ if(form){
         });
 
     });
+
+}
+
+</script>
+
+<div class="modal fade" id="cameraModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+
+                    📷 Selfie Absensi
+
+                </h5>
+
+            </div>
+
+            <div class="modal-body text-center">
+
+                <video
+                    id="video"
+                    autoplay
+                    playsinline
+                    class="w-100 rounded">
+                </video>
+
+                <canvas
+                    id="canvas"
+                    class="d-none">
+                </canvas>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-primary"
+                    id="capture">
+
+                    📸 Ambil Foto
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const modal = new bootstrap.Modal(document.getElementById('cameraModal'));
+
+const video = document.getElementById('video');
+
+const canvas = document.getElementById('canvas');
+
+let stream;
+
+document.getElementById('btnAbsen').onclick = async function(){
+
+    modal.show();
+
+    stream = await navigator.mediaDevices.getUserMedia({
+
+        video:{
+            facingMode:"user"
+        }
+
+    });
+
+    video.srcObject = stream;
+
+}
+
+</script>
+
+<script>
+
+document.getElementById('capture').onclick = function(){
+
+    const context = canvas.getContext('2d');
+
+    canvas.width = video.videoWidth;
+
+    canvas.height = video.videoHeight;
+
+    context.drawImage(video,0,0);
+
+    const image = canvas.toDataURL('image/jpeg',0.8);
+
+    document.getElementById('selfie').value = image;
+
+    stream.getTracks().forEach(track=>track.stop());
+
+    modal.hide();
+
+    ambilLokasi();
+
+}
+
+</script>
+
+<script>
+
+function ambilLokasi(){
+
+    if(!navigator.geolocation){
+
+        alert("Browser tidak mendukung GPS");
+
+        return;
+
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(pos){
+
+            document.getElementById('latitude').value =
+                pos.coords.latitude;
+
+            document.getElementById('longitude').value =
+                pos.coords.longitude;
+
+            document.getElementById('absenForm').submit();
+
+        },
+
+        function(){
+
+            alert("GPS tidak dapat diakses.");
+
+        }
+
+    );
 
 }
 

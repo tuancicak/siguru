@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Helpers\LocationHelper;
 use App\Models\Absensi;
 use App\Models\Guru;
@@ -126,23 +127,36 @@ class GuruDashboardController extends Controller
             ->greaterThan(Carbon::parse($pengaturan->batas_terlambat))
                 ? 'Terlambat'
                 : 'Hadir';
+        
+        $selfiePath = null;
+
+if ($request->filled('selfie')) {
+
+    $image = $request->selfie;
+
+    $image = str_replace('data:image/jpeg;base64,', '', $image);
+
+    $image = str_replace(' ', '+', $image);
+
+    $fileName = 'selfie_' . time() . '.jpg';
+
+    Storage::disk('public')->put(
+        'selfie/' . $fileName,
+        base64_decode($image)
+    );
+
+    $selfiePath = 'selfie/' . $fileName;
+}
 
         Absensi::create([
-
             'guru_id' => $guru->id,
-
             'tanggal' => today(),
-
             'jam_masuk' => $jamSekarang,
-
             'status' => $status,
-
             'keterangan' => null,
-
             'latitude' => $request->latitude,
-
             'longitude' => $request->longitude,
-
+            'selfie' => $selfiePath,
         ]);
 
         return back()->with(
