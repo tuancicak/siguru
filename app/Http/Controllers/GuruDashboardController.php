@@ -85,6 +85,38 @@ class GuruDashboardController extends Controller
 
         $pengaturan = Pengaturan::first();
 
+        if ($pengaturan->use_gps) {
+
+        if (!$request->latitude || !$request->longitude) {
+
+            return back()->with(
+                'error',
+                'Lokasi GPS tidak ditemukan.'
+            );
+
+        }
+
+        $jarak = LocationHelper::distance(
+
+            $request->latitude,
+            $request->longitude,
+
+            $pengaturan->latitude,
+            $pengaturan->longitude
+
+        );
+
+        if ($jarak > $pengaturan->radius) {
+
+            return back()->with(
+                'error',
+                "Anda berada di luar radius sekolah ({$jarak} meter)."
+            );
+
+        }
+
+        }
+
         $jamSekarang = Carbon::now()->format('H:i:s');
 
         $status = Carbon::parse($jamSekarang)
@@ -92,15 +124,23 @@ class GuruDashboardController extends Controller
                 ? 'Terlambat'
                 : 'Hadir';
 
-        Absensi::create([
-            'guru_id'     => $guru->id,
-            'tanggal'     => today(),
-            'jam_masuk'   => $jamSekarang,
-            'status'      => $status,
-            'keterangan'  => null,
-            'latitude'  => $request->latitude,
-            'longitude' => $request->longitude,
-        ]);
+            Absensi::create([
+
+                'guru_id' => $guru->id,
+
+                'tanggal' => today(),
+
+                'jam_masuk' => $jamSekarang,
+
+                'status' => $status,
+
+                'keterangan' => null,
+
+                'latitude' => $request->latitude,
+
+                'longitude' => $request->longitude,
+
+            ]);
 
         return back()->with(
             'success',
