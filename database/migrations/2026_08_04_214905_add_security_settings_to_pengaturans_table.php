@@ -9,13 +9,13 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
+    public function up(): void
     {
         Schema::table('pengaturans', function (Blueprint $table) {
 
-            $table->decimal('latitude',10,7)->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
 
-            $table->decimal('longitude',10,7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
 
             $table->integer('radius')->default(100);
 
@@ -44,7 +44,7 @@ return new class extends Migration
                 'use_gps',
                 'use_selfie',
                 'use_device',
-                'use_working_hours'
+                'use_working_hours',
             ]);
 
         });

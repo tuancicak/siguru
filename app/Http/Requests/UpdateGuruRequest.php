@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Guru;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Models\Guru;
 
 class UpdateGuruRequest extends FormRequest
 {
@@ -23,31 +23,31 @@ class UpdateGuruRequest extends FormRequest
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
-{
+    {
 
-    $guru = Guru::findOrFail($this->route('guru'));
+        $guru = Guru::findOrFail($this->route('guru'));
 
-    return [
-        'nip' => [
-            'required',
-            Rule::unique('gurus', 'nip')->ignore($guru),
-        ],
+        return [
+            'nip' => [
+                'required',
+                Rule::unique('gurus', 'nip')->ignore($guru),
+            ],
 
-        'nama' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
 
-        'jabatan' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
 
-        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
 
-        'no_hp' => 'nullable|string|max:20',
+            'no_hp' => 'nullable|string|max:20',
 
-        'email' => [
-            'required',
-            'email',
-            Rule::unique('users', 'email')->ignore($guru->user_id),
-        ],
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($guru->user_id),
+            ],
 
-        'password' => 'nullable|min:8',
+            'password' => 'nullable|min:8',
         ];
     }
 }

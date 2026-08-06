@@ -10,33 +10,33 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('absensis', function (Blueprint $table) {
+    {
+        Schema::create('absensis', function (Blueprint $table) {
 
-        $table->id();
+            $table->id();
 
-        $table->foreignId('guru_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('guru_id')->constrained()->cascadeOnDelete();
 
-        $table->date('tanggal');
+            $table->date('tanggal');
 
-        $table->string('keterangan')->nullable();
+            $table->string('keterangan')->nullable();
 
-        $table->time('jam_masuk')->nullable();
+            $table->time('jam_masuk')->nullable();
 
-        $table->time('jam_pulang')->nullable();
+            $table->time('jam_pulang')->nullable();
 
-        $table->enum('status', [
-            'Hadir',
-            'Terlambat',
-            'Izin',
-            'Sakit',
-            'Alfa'
-        ])->default('Alfa');
+            $table->enum('status', [
+                'Hadir',
+                'Terlambat',
+                'Izin',
+                'Sakit',
+                'Alfa',
+            ])->default('Alfa');
 
-        $table->timestamps();
+            $table->timestamps();
 
-    });
-}
+        });
+    }
 
     /**
      * Reverse the migrations.

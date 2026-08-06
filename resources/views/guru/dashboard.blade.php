@@ -189,27 +189,62 @@
 
         @if(!$absensiHariIni)
 
-        <form id="formAbsen" action="{{ route('guru.absen-masuk') }}" method="POST">
+<form
+    action="{{ route('guru.absen-masuk') }}"
+    method="POST"
+    enctype="multipart/form-data">
 
-            @csrf
+    @csrf
+
+    @if($pengaturan && $pengaturan->use_selfie)
+
+<div class="mb-3">
+
+    <label class="form-label">
+        📷 Selfie
+    </label>
+
+    <input
+        type="file"
+        name="selfie"
+        class="form-control"
+        accept="image/*"
+        capture="user"
+        required>
+
+</div>
+
+@endif
+
+    @if($pengaturan && $pengaturan->use_selfie)
+
+        <div class="mb-3">
+
+            <label class="form-label">
+
+                Selfie
+
+            </label>
 
             <input
-                type="hidden"
-                name="latitude"
-                id="latitude">
+                type="file"
+                name="selfie"
+                class="form-control"
+                accept="image/*"
+                capture="user"
+                required>
 
-            <input
-                type="hidden"
-                name="longitude"
-                id="longitude">
+        </div>
 
-            <button class="btn btn-success btn-lg w-100 rounded-4 shadow py-3">
+    @endif
 
-                🟢 Absen Masuk
+    <button class="btn btn-success btn-lg w-100 rounded-4 shadow py-3">
 
-            </button>
+        🟢 Absen Masuk
 
-        </form>
+    </button>
+
+</form>
 
         @elseif(!$absensiHariIni->jam_pulang)
 

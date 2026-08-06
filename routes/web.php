@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\GuruDashboardController;
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AbsensiController;
-use App\Http\Controllers\PengaturanController;
-use App\Http\Controllers\LaporanController;
 
 // Halaman utama
 Route::redirect('/', '/login');
@@ -23,10 +23,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('guru.absen-masuk');
 
     Route::post('/guru/absen-pulang', [GuruDashboardController::class, 'absenPulang'])
-    ->name('guru.absen-pulang');
+        ->name('guru.absen-pulang');
 
     Route::get('/guru/{guru}/qrcode', [GuruController::class, 'qrcode'])
-    ->name('guru.qrcode');
+        ->name('guru.qrcode');
 
 });
 
@@ -38,8 +38,8 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
     Route::resource('guru', GuruController::class);
 
     Route::get('/absensi/export/pdf', [
-    App\Http\Controllers\AbsensiController::class,
-    'exportPdf'
+        AbsensiController::class,
+        'exportPdf',
     ])->name('absensi.pdf');
 
     Route::resource('absensi', AbsensiController::class);
@@ -47,10 +47,10 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
     Route::resource('pengaturan', PengaturanController::class);
 
     Route::get('/laporan', [LaporanController::class, 'index'])
-    ->name('laporan.index');
+        ->name('laporan.index');
 
     Route::get('/laporan/pdf', [LaporanController::class, 'exportPdf'])
-    ->name('laporan.pdf');
+        ->name('laporan.pdf');
 
 });
 

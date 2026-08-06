@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guru;
 use App\Models\Absensi;
-use Illuminate\Http\Request;
+use App\Models\Guru;
 use App\Models\Pengaturan;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 
 class LaporanController extends Controller
 {
@@ -19,7 +19,7 @@ class LaporanController extends Controller
         if ($request->filled('bulan')) {
 
             $query->whereMonth('tanggal', date('m', strtotime($request->bulan)))
-                  ->whereYear('tanggal', date('Y', strtotime($request->bulan)));
+                ->whereYear('tanggal', date('Y', strtotime($request->bulan)));
 
         }
 
@@ -31,17 +31,17 @@ class LaporanController extends Controller
 
         $absensis = $query->orderByDesc('tanggal')->get();
 
-       $totalGuru = Guru::count();
+        $totalGuru = Guru::count();
 
         $totalAbsensi = $absensis->count();
 
-        $totalHadir = $absensis->where('status','Hadir')->count();
+        $totalHadir = $absensis->where('status', 'Hadir')->count();
 
-        $totalTerlambat = $absensis->where('status','Terlambat')->count();
+        $totalTerlambat = $absensis->where('status', 'Terlambat')->count();
 
-        $totalIzin = $absensis->whereIn('status',[
+        $totalIzin = $absensis->whereIn('status', [
             'Izin',
-            'Sakit'
+            'Sakit',
         ])->count();
 
         return view('laporan.index', compact(
@@ -82,7 +82,7 @@ class LaporanController extends Controller
 
         $totalIzin = $absensis->whereIn('status', [
             'Izin',
-            'Sakit'
+            'Sakit',
         ])->count();
 
         $pdf = Pdf::loadView(

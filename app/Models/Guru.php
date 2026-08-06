@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Models;
-use App\Models\Absensi;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +26,6 @@ class Guru extends Model
 
     public function absensis(): HasMany
     {
-         return $this->hasMany(Absensi::class);
+        return $this->hasMany(Absensi::class);
     }
-
 }

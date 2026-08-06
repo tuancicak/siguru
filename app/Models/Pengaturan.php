@@ -37,7 +37,7 @@ class Pengaturan extends Model
         'use_selfie',
 
         'use_device',
-        
+
         'use_working_hours',
 
     ];

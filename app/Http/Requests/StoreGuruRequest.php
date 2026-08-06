@@ -22,14 +22,14 @@ class StoreGuruRequest extends FormRequest
      */
     public function rules(): array
     {
-    return [
-        'nip' => 'required|unique:gurus,nip',
-        'nama' => 'required|string|max:255',
-        'jabatan' => 'required|string|max:255',
-        'no_hp' => 'nullable|string|max:20',
-        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:8',
-    ];
+        return [
+            'nip' => 'required|unique:gurus,nip',
+            'nama' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
+        ];
     }
 }

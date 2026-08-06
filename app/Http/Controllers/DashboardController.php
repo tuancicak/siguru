@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guru;
 use App\Models\Absensi;
+use App\Models\Guru;
 use App\Models\Pengaturan;
 use Illuminate\Support\Facades\DB;
 
@@ -33,18 +33,18 @@ class DashboardController extends Controller
             DB::raw('DATE(tanggal) as tanggal'),
             DB::raw('COUNT(*) as total')
         )
-        ->whereDate('tanggal', '>=', now()->subDays(6))
-        ->groupBy('tanggal')
-        ->orderBy('tanggal')
-        ->get();
+            ->whereDate('tanggal', '>=', now()->subDays(6))
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
 
         $statusChart = Absensi::select(
             'status',
             DB::raw('COUNT(*) as total')
         )
-        ->whereDate('tanggal', today())
-        ->groupBy('status')
-        ->get();
+            ->whereDate('tanggal', today())
+            ->groupBy('status')
+            ->get();
 
         $guruBelumAbsen = Guru::whereDoesntHave('absensis', function ($q) {
             $q->whereDate('tanggal', today());
@@ -67,10 +67,10 @@ class DashboardController extends Controller
         : 0;
 
         $guruTerajin = Guru::withCount([
-        'absensis as total_hadir' => function ($q) {
-            $q->whereMonth('tanggal', now()->month)
-            ->whereYear('tanggal', now()->year);
-            }
+            'absensis as total_hadir' => function ($q) {
+                $q->whereMonth('tanggal', now()->month)
+                    ->whereYear('tanggal', now()->year);
+            },
         ])
             ->orderByDesc('total_hadir')
             ->take(5)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\Pengaturan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -13,30 +14,29 @@ class AbsensiController extends Controller
      */
     public function index(Request $request)
     {
-    $query = Absensi::with('guru');
+        $query = Absensi::with('guru');
 
-    if ($request->filled('tanggal')) {
+        if ($request->filled('tanggal')) {
 
-        $query->whereDate('tanggal', $request->tanggal);
+            $query->whereDate('tanggal', $request->tanggal);
 
-    }
+        }
 
-    if ($request->filled('nama')) {
+        if ($request->filled('nama')) {
 
-        $query->whereHas('guru', function ($q) use ($request) {
+            $query->whereHas('guru', function ($q) use ($request) {
 
-            $q->where('nama', 'like', '%' . $request->nama . '%');
+                $q->where('nama', 'like', '%'.$request->nama.'%');
 
-        });
+            });
 
-    }
+        }
 
+        $absensis = $query
+            ->latest('tanggal')
+            ->get();
 
-    $absensis = $query
-        ->latest('tanggal')
-        ->get();
-
-    return view('absensi.index', compact('absensis'));
+        return view('absensi.index', compact('absensis'));
     }
 
     /**
@@ -74,61 +74,62 @@ class AbsensiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-   public function update(Request $request, Absensi $absensi)
+    public function update(Request $request, Absensi $absensi)
     {
-    $request->validate([
-        'jam_masuk'  => 'nullable',
-        'jam_pulang' => 'nullable',
-        'status' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alfa',
-    ]);
+        $request->validate([
+            'jam_masuk' => 'nullable',
+            'jam_pulang' => 'nullable',
+            'status' => 'required|in:Hadir,Terlambat,Izin,Sakit,Alfa',
+        ]);
 
-    $absensi->update([
-        'jam_masuk'  => $request->jam_masuk,
-        'jam_pulang' => $request->jam_pulang,
-        'status'     => $request->status,
-    ]);
+        $absensi->update([
+            'jam_masuk' => $request->jam_masuk,
+            'jam_pulang' => $request->jam_pulang,
+            'status' => $request->status,
+        ]);
 
-    return redirect()
-        ->route('absensi.index')
-        ->with('success', 'Data absensi berhasil diperbarui.');
+        return redirect()
+            ->route('absensi.index')
+            ->with('success', 'Data absensi berhasil diperbarui.');
     }
 
     public function exportPdf(Request $request)
     {
-    $query = Absensi::with('guru');
+        $query = Absensi::with('guru');
 
-    if ($request->filled('tanggal')) {
+        if ($request->filled('tanggal')) {
 
-        $query->whereDate('tanggal', $request->tanggal);
+            $query->whereDate('tanggal', $request->tanggal);
 
+        }
+
+        if ($request->filled('nama')) {
+
+            $query->whereHas('guru', function ($q) use ($request) {
+
+                $q->where('nama', 'like', '%'.$request->nama.'%');
+
+            });
+
+        }
+
+        $absensis = $query
+            ->latest('tanggal')
+            ->get();
+
+        $pengaturan = Pengaturan::first();
+
+        $pdf = Pdf::loadView(
+            'absensi.pdf',
+            compact(
+                'absensis',
+                'pengaturan'
+            )
+        );
+
+        return $pdf->download('laporan_absensi.pdf');
     }
 
-    if ($request->filled('nama')) {
-
-        $query->whereHas('guru', function ($q) use ($request) {
-
-            $q->where('nama', 'like', '%' . $request->nama . '%');
-
-        });
-
-    }
-
-    $absensis = $query
-        ->latest('tanggal')
-        ->get();
-
-    $pengaturan = \App\Models\Pengaturan::first();
-
-    $pdf = Pdf::loadView(
-        'absensi.pdf',
-        compact(
-            'absensis',
-            'pengaturan'
-        )
-    );
-
-    return $pdf->download('laporan_absensi.pdf');
-    }
     /**
      * Remove the specified resource from storage.
      */

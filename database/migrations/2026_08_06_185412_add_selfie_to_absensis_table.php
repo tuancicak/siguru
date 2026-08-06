@@ -11,21 +11,18 @@ return new class extends Migration
      */
 public function up(): void
 {
-    Schema::table('users', function (Blueprint $table) {
+    Schema::table('absensis', function (Blueprint $table) {
 
-        $table->string('device_id')->nullable()->after('remember_token');
+        $table->string('selfie')->nullable()->after('longitude');
 
     });
 }
 
-    /**
-     * Reverse the migrations.
-     */
 public function down(): void
 {
-    Schema::table('users', function (Blueprint $table) {
+    Schema::table('absensis', function (Blueprint $table) {
 
-        $table->dropColumn('device_id');
+        $table->dropColumn('selfie');
 
     });
 }

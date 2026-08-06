@@ -9,32 +9,32 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up(): void
-{
-    Schema::create('gurus', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::create('gurus', function (Blueprint $table) {
 
-        $table->id();
+            $table->id();
 
-        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
 
-        $table->string('nip')->unique();
+            $table->string('nip')->unique();
 
-        $table->string('nama');
+            $table->string('nama');
 
-        $table->string('jabatan');
+            $table->string('jabatan');
 
-        $table->string('jenis_kelamin');
+            $table->string('jenis_kelamin');
 
-        $table->string('alamat')->nullable();
+            $table->string('alamat')->nullable();
 
-        $table->string('no_hp')->nullable();
+            $table->string('no_hp')->nullable();
 
-        $table->boolean('aktif')->default(true);
+            $table->boolean('aktif')->default(true);
 
-        $table->timestamps();
+            $table->timestamps();
 
-    });
-}
+        });
+    }
 
     /**
      * Reverse the migrations.

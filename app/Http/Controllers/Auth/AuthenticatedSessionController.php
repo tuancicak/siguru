@@ -24,25 +24,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-    $request->authenticate();
+        $request->authenticate();
 
-    $request->session()->regenerate();
+        $request->session()->regenerate();
 
-    $user = Auth::user();
+        $user = Auth::user();
 
-    if ($user->role === 'operator') {
-        return redirect()->route('dashboard');
-    }
+        if ($user->role === 'operator') {
+            return redirect()->route('dashboard');
+        }
 
-    if ($user->role === 'guru') {
-        return redirect()->route('guru.dashboard');
-    }
+        if ($user->role === 'guru') {
+            return redirect()->route('guru.dashboard');
+        }
 
-    Auth::logout();
+        Auth::logout();
 
-    return redirect('/login')->withErrors([
-        'email' => 'Role tidak dikenali.',
-    ]);
+        return redirect('/login')->withErrors([
+            'email' => 'Role tidak dikenali.',
+        ]);
     }
 
     /**

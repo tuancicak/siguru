@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LocationHelper;
-use Illuminate\Http\Request;
-use App\Models\Guru;
 use App\Models\Absensi;
+use App\Models\Guru;
 use App\Models\Pengaturan;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuruDashboardController extends Controller
 {
@@ -58,19 +58,22 @@ class GuruDashboardController extends Controller
 
         }
 
+        $pengaturan = Pengaturan::first();
+
         return view('guru.dashboard', compact(
             'absensiHariIni',
             'riwayat',
             'totalHadir',
-            'totalTerlambat'
+            'totalTerlambat',
+            'pengaturan',
         ));
     }
 
-   public function absenMasuk(\Illuminate\Http\Request $request)
+    public function absenMasuk(Request $request)
     {
         $guru = Guru::where('user_id', Auth::id())->first();
 
-        if (!$guru) {
+        if (! $guru) {
             return back()->with('error', 'Data guru tidak ditemukan.');
         }
 
@@ -87,33 +90,33 @@ class GuruDashboardController extends Controller
 
         if ($pengaturan->use_gps) {
 
-        if (!$request->latitude || !$request->longitude) {
+            if (! $request->latitude || ! $request->longitude) {
 
-            return back()->with(
-                'error',
-                'Lokasi GPS tidak ditemukan.'
+                return back()->with(
+                    'error',
+                    'Lokasi GPS tidak ditemukan.'
+                );
+
+            }
+
+            $jarak = LocationHelper::distance(
+
+                $request->latitude,
+                $request->longitude,
+
+                $pengaturan->latitude,
+                $pengaturan->longitude
+
             );
 
-        }
+            if ($jarak > $pengaturan->radius) {
 
-        $jarak = LocationHelper::distance(
+                return back()->with(
+                    'error',
+                    "Anda berada di luar radius sekolah ({$jarak} meter)."
+                );
 
-            $request->latitude,
-            $request->longitude,
-
-            $pengaturan->latitude,
-            $pengaturan->longitude
-
-        );
-
-        if ($jarak > $pengaturan->radius) {
-
-            return back()->with(
-                'error',
-                "Anda berada di luar radius sekolah ({$jarak} meter)."
-            );
-
-        }
+            }
 
         }
 
@@ -124,23 +127,23 @@ class GuruDashboardController extends Controller
                 ? 'Terlambat'
                 : 'Hadir';
 
-            Absensi::create([
+        Absensi::create([
 
-                'guru_id' => $guru->id,
+            'guru_id' => $guru->id,
 
-                'tanggal' => today(),
+            'tanggal' => today(),
 
-                'jam_masuk' => $jamSekarang,
+            'jam_masuk' => $jamSekarang,
 
-                'status' => $status,
+            'status' => $status,
 
-                'keterangan' => null,
+            'keterangan' => null,
 
-                'latitude' => $request->latitude,
+            'latitude' => $request->latitude,
 
-                'longitude' => $request->longitude,
+            'longitude' => $request->longitude,
 
-            ]);
+        ]);
 
         return back()->with(
             'success',
@@ -148,11 +151,11 @@ class GuruDashboardController extends Controller
         );
     }
 
-        public function absenPulang()
+    public function absenPulang()
     {
         $guru = Guru::where('user_id', Auth::id())->first();
 
-        if (!$guru) {
+        if (! $guru) {
             return back()->with('error', 'Data guru tidak ditemukan.');
         }
 
@@ -160,7 +163,7 @@ class GuruDashboardController extends Controller
             ->whereDate('tanggal', today())
             ->first();
 
-        if (!$absensi) {
+        if (! $absensi) {
             return back()->with('error', 'Silakan absen masuk terlebih dahulu.');
         }
 
@@ -169,7 +172,7 @@ class GuruDashboardController extends Controller
         }
 
         $absensi->update([
-            'jam_pulang' => Carbon::now()->format('H:i:s')
+            'jam_pulang' => Carbon::now()->format('H:i:s'),
         ]);
 
         return back()->with(

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Requests\StoreGuruRequest;
 use App\Http\Requests\UpdateGuruRequest;
 use App\Models\Guru;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class GuruController extends Controller
 {
@@ -18,9 +16,9 @@ class GuruController extends Controller
      */
     public function index()
     {
-    $gurus = Guru::all();
+        $gurus = Guru::all();
 
-    return view('guru.index', compact('gurus'));
+        return view('guru.index', compact('gurus'));
     }
 
     /**
@@ -59,6 +57,7 @@ class GuruController extends Controller
             ->route('guru.index')
             ->with('success', 'Data guru berhasil ditambahkan.');
     }
+
     /**
      * Display the specified resource.
      */
@@ -72,66 +71,67 @@ class GuruController extends Controller
      */
     public function edit(string $id)
     {
-    $guru = Guru::with('user')->findOrFail($id);
+        $guru = Guru::with('user')->findOrFail($id);
 
-    return view('guru.edit', compact('guru'));
+        return view('guru.edit', compact('guru'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-public function update(UpdateGuruRequest $request, string $id)
-{
-    $guru = Guru::with('user')->findOrFail($id);
+    public function update(UpdateGuruRequest $request, string $id)
+    {
+        $guru = Guru::with('user')->findOrFail($id);
 
-    // Update user
-    $guru->user->update([
-        'name' => $request->nama,
-        'email' => $request->email,
-    ]);
+        // Update user
+        $guru->user->update([
+            'name' => $request->nama,
+            'email' => $request->email,
+        ]);
 
-    // Update password jika diisi
-    if ($request->filled('password')) {
-        $guru->user->password = Hash::make($request->password);
-        $guru->user->save();
+        // Update password jika diisi
+        if ($request->filled('password')) {
+            $guru->user->password = Hash::make($request->password);
+            $guru->user->save();
+        }
+
+        // Update data guru
+        $guru->update([
+            'nip' => $request->nip,
+            'nama' => $request->nama,
+            'jabatan' => $request->jabatan,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'no_hp' => $request->no_hp,
+        ]);
+
+        return redirect()
+            ->route('guru.index')
+            ->with('success', 'Data guru berhasil diperbarui.');
     }
 
-    // Update data guru
-    $guru->update([
-        'nip' => $request->nip,
-        'nama' => $request->nama,
-        'jabatan' => $request->jabatan,
-        'jenis_kelamin' => $request->jenis_kelamin,
-        'no_hp' => $request->no_hp,
-    ]);
-
-    return redirect()
-        ->route('guru.index')
-        ->with('success', 'Data guru berhasil diperbarui.');
-}
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-{
-    $guru = Guru::with('user')->findOrFail($id);
+    {
+        $guru = Guru::with('user')->findOrFail($id);
 
-    // Hapus akun user (data guru ikut terhapus karena cascadeOnDelete)
-    $guru->user->delete();
+        // Hapus akun user (data guru ikut terhapus karena cascadeOnDelete)
+        $guru->user->delete();
 
-    return redirect()
-        ->route('guru.index')
-        ->with('success', 'Data guru berhasil dihapus.');
-}
-
-public function qrcode(Guru $guru)
-{
-    if (!$guru->qr_code) {
-        $guru->update([
-            'qr_code' => Str::uuid(),
-        ]);
+        return redirect()
+            ->route('guru.index')
+            ->with('success', 'Data guru berhasil dihapus.');
     }
 
-    return view('guru.qrcode', compact('guru'));
-}
+    public function qrcode(Guru $guru)
+    {
+        if (! $guru->qr_code) {
+            $guru->update([
+                'qr_code' => Str::uuid(),
+            ]);
+        }
+
+        return view('guru.qrcode', compact('guru'));
+    }
 }
