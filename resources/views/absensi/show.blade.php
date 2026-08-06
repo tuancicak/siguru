@@ -90,6 +90,33 @@
 
                     </tr>
 
+                    <tr>
+
+                        <th>Google Maps</th>
+
+                        <td>
+
+                            @if($absensi->latitude && $absensi->longitude)
+
+                                <a
+                                    href="https://www.google.com/maps?q={{ $absensi->latitude }},{{ $absensi->longitude }}"
+                                    target="_blank"
+                                    class="btn btn-success">
+
+                                    📍 Lihat Lokasi
+
+                                </a>
+
+                            @else
+
+                                -
+
+                            @endif
+
+                        </td>
+
+                    </tr>
+
                 </table>
 
             </div>
